@@ -26,8 +26,8 @@ The code contained in this package is used for creating and analyzing the L1Fast
 mkdir MC-truth-JEC/ \
 cd MC-truth-JEC/ \
 tcsh \
-cmsrel CMSSW_10_4_3 \
-cd CMSSW_10_4_3/src \
+cmsrel CMSSW_12_4_3 \
+cd CMSSW_12_4_3/src \
 cmsenv \
 git-cms-init \
 git clone https://github.com/izisopou/JetMETAnalysis-MC-truth.git 
