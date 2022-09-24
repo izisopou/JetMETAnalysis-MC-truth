@@ -109,7 +109,7 @@ To resubmit jobs if some have failed:
 crab resubmit -d workArea/requestName/
 
 When all jobs are in finished status, the output JRA root files, based on the above custom_crab_JEC.py, will be located in a directory with this format:\
-/eos/cms/store/group/phys_jetmet/ilias/test/QCD_Pt-15to7000_TuneCP5_Flat2018_13TeV_pythia8/DatasetTag/yymmdd_hhmmss/0000/
+/eos/cms/store/group/phys_jetmet/ilias/test/QCD_Pt-15to7000_TuneCP5_Flat2018_13TeV_pythia8/outputDatasetTag/yymmdd_hhmmss/0000/
 
 These JRA root files are the input ntuples for the MC-truth jet energy corrections.
 
