@@ -44,7 +44,7 @@ cms1->SetBorderSize(0);
 cms1->SetTextSize(0.05);
 
 TPaveText *cms2 = new TPaveText(0.71,0.96,0.91,0.99,"NDC");
-cms2->AddText("#bf{2016 early Legacy (13 TeV)}");
+cms2->AddText("Winter22Run3 (13.6 TeV)");
 cms2->SetFillColor(0);
 cms2->SetBorderSize(0);
 cms2->SetTextSize(0.05);
@@ -54,8 +54,8 @@ char cname_vsPt[1024];
 
 char Etabins[15][100]={"|#eta| < 0.087", "0.261 < |#eta| < 0.348", "0.609 < |#eta| < 0.696", "0.957 < |#eta| < 1.044", "1.218 < |#eta| < 1.305", "1.479 < |#eta| < 1.566", "1.740 < |#eta| < 1.83", "2.043 < |#eta| < 2.172", "2.172 < |#eta| < 2.322", "2.322 < |#eta| < 2.500","2.500 < |#eta| < 2.650", "2.650 < |#eta| < 2.853", "2.853 < |#eta| < 2.964", "2.964 < |#eta| < 3.139", "3.489 < |#eta| < 3.664"};
 
-TFile *f1 = new TFile("Corrections_ak4pfchs_positive_eta.root");
-TFile *f2 = new TFile("Corrections_ak4pfchs_negative_eta.root");
+TFile *f1 = new TFile("/path1/to/Corrections_positive_eta.root");
+TFile *f2 = new TFile("/path1/to/Corrections_negative_eta.root");
 
 //Corrections Vs Rho
 
@@ -107,8 +107,8 @@ for(int c=0; c<=14; c++)
 	TLegend *l = new TLegend(0.5,0.65,0.8,0.85,"");
 	l->SetBorderSize(0);
 	l->SetTextSize(0.025);
-	l->AddEntry(cc1_pos,"set of corrections (MC sample) (#eta>0)","L");
-	l->AddEntry(cc1_neg,"set of corrections (MC sample) (#eta<0)","L");
+	l->AddEntry(cc1_pos,"set of corrections (#eta>0)","L");
+	l->AddEntry(cc1_neg,"set of corrections (#eta<0)","L");
 	l->AddEntry((TObject*)0,"AK4 CHS jets","");
 	l->Draw();
 
@@ -118,9 +118,3 @@ for(int c=0; c<=14; c++)
 	sprintf(cname_vsPt, "L1CorrectionVsRho_%d.png", c);
 	canvas_vsRho->SaveAs(cname_vsRho);	
 }
-
-
-
-
-
-
