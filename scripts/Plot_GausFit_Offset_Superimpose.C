@@ -7,7 +7,7 @@
 
 //////////////////////////////////////////////////////
 //
-// Plots offset distribution for 2 sets and fits them
+// Plots the offset distribution for 2 sets and fits them
 // around the peak to find the M.P.V.
 //
 //////////////////////////////////////////////////////
@@ -109,8 +109,8 @@ TCanvas *c = new TCanvas("c","c",1000,800);
 c->SetTickx(1);
 c->SetTicky(1);
 
-TFile *f1 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run3Winter22/AK4PUPPI/Step2_mu0/output_ak4puppi.root");
-TFile *f2 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run2_Legacy_Final/UL2018/AK4PUPPI/Step2_mu0/output_ak4puppi.root");
+TFile *f1 = new TFile("/path1/to/Step2/output_ak4puppi.root");
+TFile *f2 = new TFile("/path2/to/Step2/output_ak4puppi.root");
 
 char eta_reg[1024];
 if(eta==0.0) sprintf(eta_reg,"bb");
@@ -123,7 +123,7 @@ for(int mu=0; mu<=40; mu=mu+10){
 char hname[1024];
 sprintf(hname,"p_offresVsrefpt_%s_tnpu%d_%d",eta_reg,mu,mu);
 
-TH2D *h1 = (TH2D*)f1->Get(hname);	//bb = |η|<1.3, ei = 1.3 < |η| < 2.5 , eo = 2.5 < |η| < 3.0 , ff = 3.0 < |η| < 5.0
+TH2D *h1 = (TH2D*)f1->Get(hname);	
 TH2D *h2 = (TH2D*)f2->Get(hname);
 
 for(unsigned int i=1; i<=h1->GetNbinsX(); i++)
@@ -133,35 +133,32 @@ for(unsigned int i=1; i<=h1->GetNbinsX(); i++)
 
 c->cd();
 
-TH1D *histo1 = h1->ProjectionY("Run3Winter22",23,23);
-TH1D *histo2 = h2->ProjectionY("2018 Legacy",23,23);
+TH1D *histo1 = h1->ProjectionY("first set",23,23);
+TH1D *histo2 = h2->ProjectionY("second set",23,23);
 
 histo1->Rebin(4);
 histo2->Rebin(4);
-
 histo1->SetStats(0);
 histo2->SetStats(0);
-
 histo1->GetXaxis()->SetRangeUser(-40,40);
 histo1->GetXaxis()->SetNdivisions(1010);
 char titlename[1024];
-if (eta==0.0) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 90 - 120 GeV, |#eta|< 1.3 , %d #leq #mu < %d}",mu,mu+10);
-if (eta==1.3) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 90 - 120 GeV, 1.3 < |#eta|< 2.5 , %d #leq #mu < %d}",mu,mu+10);
-if (eta==2.5) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 90 - 120 GeV, 2.5 < |#eta|< 3.0 , %d #leq #mu < %d}",mu,mu+10);
-if (eta==3.0) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 90 - 120 GeV, 3.0 < |#eta|< 5.0 , %d #leq #mu < %d}",mu,mu+10);
+if (eta==0.0) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 45 - 57 GeV, |#eta|< 1.3 , %d #leq #mu < %d}",mu,mu+10);
+if (eta==1.3) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 45 - 57 GeV, 1.3 < |#eta|< 2.5 , %d #leq #mu < %d}",mu,mu+10);
+if (eta==2.5) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 45 - 57 GeV, 2.5 < |#eta|< 3.0 , %d #leq #mu < %d}",mu,mu+10);
+if (eta==3.0) sprintf(titlename,"#font[22]{p_{T}^{ptcl} : 45 - 57 GeV, 3.0 < |#eta|< 5.0 , %d #leq #mu < %d}",mu,mu+10);
 histo1->SetTitle(titlename);
 histo1->GetXaxis()->SetTitle("Offset [GeV]");
 histo1->GetYaxis()->SetTitle("A.U.");
 histo1->GetYaxis()->SetTitleOffset(1.3);
-//histo1->GetYaxis()->SetRangeUser(0.,30);
 histo1->SetMarkerSize(0.7);
 histo1->SetMarkerColor(kBlack);
 histo1->SetLineColor(kBlack);
 histo1->SetLineWidth(2);
 histo1->SetMarkerStyle(8);
 histo2->SetMarkerSize(0.7);
-histo2->SetMarkerColor(kRed);
-histo2->SetLineColor(kRed);
+histo2->SetMarkerColor(kBlue);
+histo2->SetLineColor(kBlue);
 histo2->SetLineWidth(2);
 histo2->SetMarkerStyle(8);
 histo1->Draw("hist");
@@ -170,7 +167,7 @@ histo2->Draw("hist sames");
 
 TF1 *g1;
 g1=FindBestGaussianCoreFit(histo1);
-//g1->Draw("same");
+g1->Draw("same");
 
 cout<<"Prob = "<<g1->GetProb()<<endl;
 cout<<"Val = "<<g1->GetParameter(1)<<endl;
@@ -178,7 +175,7 @@ cout<<"Valerr = "<<g1->GetParError(1)<<endl;
 
 TF1 *g2;
 g2=FindBestGaussianCoreFit(histo2);
-//g2->Draw("same");
+g2->Draw("same");
 
 cout<<"Prob = "<<g2->GetProb()<<endl;
 cout<<"Val = "<<g2->GetParameter(1)<<endl;
@@ -198,13 +195,13 @@ sprintf(constant, "Constant = %.2f #pm %.2f ",g1->GetParameter(0),g1->GetParErro
 sprintf(meanfit, "Mean     = %.2f #pm %.2f ",g1->GetParameter(1),g1->GetParError(1));
 sprintf(sigmafit, "Sigma    = %.2f #pm %.2f ",g1->GetParameter(2),g1->GetParError(2));
 
-TPaveStats *ptstats = new TPaveStats(0.7,0.65,0.98,0.85,"brNDC");  //0.62,0.1277419,0.98,0.5277419,"brNDC"
+TPaveStats *ptstats = new TPaveStats(0.62,0.535,0.98,0.935,"brNDC");  
 ptstats->SetName("stats");
 ptstats->SetBorderSize(1);
 ptstats->SetFillColor(0);
 ptstats->SetTextAlign(12);
 ptstats->SetTextFont(42);
-TText *ptstats_LaTex = ptstats->AddText("Run3Winter22");
+TText *ptstats_LaTex = ptstats->AddText("first set");
 ptstats_LaTex->SetTextSize(0.04088889);
 ptstats_LaTex = ptstats->AddText(entries);
 ptstats_LaTex = ptstats->AddText(mean);
@@ -228,13 +225,13 @@ sprintf(constant, "Constant = %.2f #pm %.2f ",g2->GetParameter(0),g2->GetParErro
 sprintf(meanfit, "Mean     = %.2f #pm %.2f ",g2->GetParameter(1),g2->GetParError(1));
 sprintf(sigmafit, "Sigma    = %.2f #pm %.2f ",g2->GetParameter(2),g2->GetParError(2));
 
-TPaveStats *ptstats2 = new TPaveStats(0.7,0.4,0.98,0.6,"brNDC"); //0.62,0.535,0.98,0.935,"brNDC"
+TPaveStats *ptstats2 = new TPaveStats(0.62,0.1277419,0.98,0.5277419,"brNDC"); 
 ptstats2->SetName("stats");
 ptstats2->SetBorderSize(1);
 ptstats2->SetFillColor(0);
 ptstats2->SetTextAlign(12);
 ptstats2->SetTextFont(42);
-TText *ptstats2_LaTex = ptstats2->AddText("2018 Legacy");
+TText *ptstats2_LaTex = ptstats2->AddText("second set");
 ptstats2_LaTex->SetTextSize(0.04088889);
 ptstats2_LaTex = ptstats2->AddText(entries);
 ptstats2_LaTex = ptstats2->AddText(mean);
@@ -249,20 +246,15 @@ ptstats2->SetOptFit(1111);
 ptstats2->Draw();
 
 
-
-TLegend *l = new TLegend(0.15,0.6,0.32,0.8,""); //0.11,0.5,0.36,0.7,""
+TLegend *l = new TLegend(0.15,0.6,0.32,0.8,"");
 l->SetBorderSize(0);
 l->SetTextSize(0.03);
-l->AddEntry(histo1,"Run3Winter22","L");
-l->AddEntry(histo2,"2018 Legacy","L");
-//TLegendEntry *l1 = l->AddEntry((TObject*)0,"Run3Winter22","");
-//TLegendEntry *l2 = l->AddEntry((TObject*)0,"2018 Legacy","");
-//l1->SetTextColor(kBlack);
-//l2->SetTextColor(kRed);
+l->AddEntry(histo1,"first set","L");
+l->AddEntry(histo2,"second set","L");
 l->Draw();
 
 char canvasname[1024];
-sprintf(canvasname,"Run3Winter22_vs_UL18/L1Offset_mu0_AK4PUPPI_Run3Winter22_vs_UL2018_pT45to57_%s.png",eta_reg);
+sprintf(canvasname,"L1Offset_AK4PUPPI_first_set_vs_second_set_pT45to57_%s.png",eta_reg);
 c->SaveAs(canvasname);
 
 }
