@@ -3,6 +3,7 @@
 <!-- MarkdownTOC depth=0 -->
 
 - [Overview](#overview)
+- [Documentation](#documentation)
 - [Setup CMSSW release](#setup-cmssw)
 - [Instructions on how to run ntuples from MINIAOD](#ntuples-miniaod)
  	- [Important codes for producing ntuples](#important-codes)
@@ -19,6 +20,21 @@
 ## Overview
 
 The code contained in this package is used for creating and analyzing the L1FastJet and L2Relative MC truth jet energy corrections. The code is used by the Jet Energy Resolution and Corrections (JERC) subgroup. This is a dedicated workflow for the MC-truth jet energy corrections used by the Athens group. The main code is located at https://github.com/cms-jet/JetMETAnalysis .
+
+<a name="documentation"></a>
+## Documentation
+
+1) CMS-AN-2021/148, "MC truth jet energy corrections using the Legacy 2016 simulations": \
+https://cms.cern.ch/iCMS/user/noteinfo?cmsnoteid=CMS%20AN-2021/148 
+
+2) CMS-AN-2020/151, "MC truth jet energy corrections using the Legacy 2017 and 2018 simulations": \
+https://cms.cern.ch/iCMS/user/noteinfo?cmsnoteid=CMS%20AN-2020/151
+
+3) CMS-AN-2020/049, "2018 Relative and Absolute MC Truth Jet Energy Corrections": \
+https://cms.cern.ch/iCMS/user/noteinfo?cmsnoteid=CMS%20AN-2020/049
+
+4) CMS-AN-2019/230, "2016 Relative and Absolute MC Truth Jet Energy Corrections": \
+https://cms.cern.ch/iCMS/user/noteinfo?cmsnoteid=CMS%20AN-2019/230
 
 <a name="setup-cmssw"></a>
 ## Setup CMSSW release
