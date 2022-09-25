@@ -37,7 +37,7 @@ cms->SetBorderSize(0);
 cms->SetFillColor(0);
 
 TPaveText *sample = new TPaveText(0.57,0.91,0.97,0.95,"NDC"); 
-sample->AddText("Run3Winter22 (13.6 TeV)");
+sample->AddText("Winter22Run3 (13.6 TeV)");
 sample->SetTextFont(42);
 sample->SetTextSize(0.04);
 sample->SetBorderSize(0);
@@ -49,10 +49,9 @@ c1->SetTicky(1);
 c1->SetRightMargin(0.05);
 c1->cd();
 
-
-TFile *f1 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run3Winter22/Flat2018QCD/neutral_multiplicity_study/Step3_NoPU_AK4PUPPI_NoPtCut_noNMcut/Merged.root","READ");
-TFile *f2 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run3Winter22/Flat2018QCD/neutral_multiplicity_study/Step3_NoPU_AK4PUPPI_NoPtCut_withNMgt1cut/Merged.root","READ");
-TFile *f3 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run3Winter22/Flat2018QCD/neutral_multiplicity_study/Step3_AK4PUPPI_NoPtCut_PUreweighted_Dphigt2p7_only2jets_withNMgt1cut/Merged.root","READ");
+TFile *f1 = new TFile("/path1/in/eos/to/Step3/Merged.root","READ");
+TFile *f2 = new TFile("/path2/in/eos/to/Step3/Merged.root","READ");
+TFile *f3 = new TFile("/path3/in/eos/to/Step3/Merged.root","READ");
 
 char hname1pos[1024], hname1neg[1024], hname2pos[1024], hname2neg[1024], hname3pos[1024], hname3neg[1024];
 
@@ -116,10 +115,9 @@ l1->Draw();
 TLegend *l1_2 = new TLegend(0.65,0.5,0.9,0.65,"");
 l1_2->SetBorderSize(0);
 l1_2->SetTextSize(0.04);
-l1_2->SetHeader("No-Pileup MC");
-l1_2->AddEntry(h1,"No NM cut","L");
-l1_2->AddEntry(h2,"NM > 1","L");
-l1_2->AddEntry(h3,"NM #geq 1","L");
+l1_2->AddEntry(h1,"first set","L");
+l1_2->AddEntry(h2,"second set","L");
+l1_2->AddEntry(h3,"third set","L");
 l1_2->Draw();
 
 TLegend *l1metric = new TLegend(0.65,0.15,0.9,0.45,"");
@@ -142,8 +140,8 @@ box->SetFillStyle(3001);
 box->Draw();
 
 char cname1[1024], cname2[1024];
-sprintf(cname1,"Double_Peak_PUPPI/neutral_multiplicity_studies/NoPU_NoNMcut_VS_NMgt1/NoPU_RspDistrBeforeL2L3_AK4PUPPI_RefPt%.0fto%.0f_JetEta%.3fto%.3f.png",ptgen_min,ptgen_max,eta_min,eta_max);
-sprintf(cname2,"Double_Peak_PUPPI/neutral_multiplicity_studies/NoPU_NoNMcut_VS_NMgt1/NoPU_RspDistrBeforeL2L3_AK4PUPPI_RefPt%.0fto%.0f_JetEta%.3fto%.3f.pdf",ptgen_min,ptgen_max,eta_min,eta_max);
+sprintf(cname1,"RspDistrBeforeL2L3_AK4PUPPI_RefPt%.0fto%.0f_JetEta%.3fto%.3f.png",ptgen_min,ptgen_max,eta_min,eta_max);
+sprintf(cname2,"RspDistrBeforeL2L3_AK4PUPPI_RefPt%.0fto%.0f_JetEta%.3fto%.3f.pdf",ptgen_min,ptgen_max,eta_min,eta_max);
 c1->SaveAs(cname1);
 c1->SaveAs(cname2);
 
