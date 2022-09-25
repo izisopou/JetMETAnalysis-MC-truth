@@ -24,17 +24,17 @@
 
 //////////////////////////////////////////////////////
 //
-// Combines the L1 closure of the 4 Run2 epochs
+// Combines the L1 offset plots for the 4 Run2 epochs
 // weighting with lumi
 //
 //////////////////////////////////////////////////////
 
 void Combine_L1Closures(){
 
-TFile *f_UL16APV = new TFile("test_style/OffsetWithoutL1VsPt_AK8PUPPI_UL16APV.root","READ");
-TFile *f_UL16nonAPV = new TFile("test_style/OffsetWithoutL1VsPt_AK8PUPPI_UL16nonAPV.root","READ");
-TFile *f_UL17 = new TFile("test_style/OffsetWithoutL1VsPt_AK8PUPPI_UL17.root","READ");
-TFile *f_UL18 = new TFile("test_style/OffsetWithoutL1VsPt_AK8PUPPI_UL18.root","READ");
+TFile *f_UL16APV = new TFile("OffsetWithoutL1VsPt_AK4PUPPI_UL16APV.root","READ");
+TFile *f_UL16nonAPV = new TFile("OffsetWithoutL1VsPt_AK4PUPPI_UL16nonAPV.root","READ");
+TFile *f_UL17 = new TFile("OffsetWithoutL1VsPt_AK4PUPPI_UL17.root","READ");
+TFile *f_UL18 = new TFile("OffsetWithoutL1VsPt_AK4PUPPI_UL18.root","READ");
 
 TH1D *h_PU0to10_UL16APV = (TH1D*)f_UL16APV->Get("histograms/OffMeantnpuRef_FF_0");
 TH1D *h_PU10to20_UL16APV = (TH1D*)f_UL16APV->Get("histograms/OffMeantnpuRef_FF_1");
@@ -136,8 +136,8 @@ for(int i=1; i<=h_PU40to50_allyears->GetNbinsX(); i++)
 
 }
 
-//TFile *fout = new TFile("test_style/OffsetWithoutL1VsPt_AK8PUPPI_ULRun2.root","RECREATE");
-TFile *fout = new TFile("test_style/OffsetWithoutL1VsPt_AK8PUPPI_ULRun2.root","UPDATE"); 
+//TFile *fout = new TFile("OffsetWithoutL1VsPt_AK4PUPPI_ULRun2.root","RECREATE");
+TFile *fout = new TFile("OffsetWithoutL1VsPt_AK4PUPPI_ULRun2.root","UPDATE"); 
 fout->cd();
 
 //TDirectoryFile *dir = new TDirectoryFile("histograms","histograms");
