@@ -31,8 +31,8 @@ void Plot_InverseOfResponseVsJetPt(){
 double eta_min = 2.964;
 double eta_max = 3.139;
 
-TFile *f1 = new TFile("condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/V1_JECs/L2L3_output/pTcut6GeV/l2.root"); 
-TFile *f2 = new TFile("condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/With_DZ_NM_cuts_and_PUreweight/L2L3_output/l2.root"); 
+TFile *f1 = new TFile("/path1/to/l2.root"); 
+TFile *f2 = new TFile("/path2/to/l2.root"); 
 
 char hname1pos[1024], hname1neg[1024], hname2pos[1024], hname2neg[1024];
 
@@ -50,7 +50,6 @@ g1pos->SetMarkerColor(kBlack);
 g1neg->SetMarkerColor(kGray+2);
 g2pos->SetMarkerColor(kBlue);
 g2neg->SetMarkerColor(kViolet);
-
 
 TCanvas *c = new TCanvas("c","c",800,700);
 c->SetLogx(1);
@@ -86,10 +85,10 @@ TLegend *l = new TLegend(0.5,0.6,0.8,0.8,"");
 l->SetTextSize(0.035);
 l->SetFillColor(0);
 l->SetBorderSize(0);
-l->AddEntry(g1pos,"Previous (V1) iteration (#eta > 0)","PE");
-l->AddEntry(g1neg,"Previous (V1) iteration (#eta < 0)","PE");
-l->AddEntry(g2pos,"New iteration (#eta > 0)","PE");
-l->AddEntry(g2neg,"New iteration (#eta < 0)","PE");
+l->AddEntry(g1pos,"first set (#eta > 0)","PE");
+l->AddEntry(g1neg,"first set (#eta < 0)","PE");
+l->AddEntry(g2pos,"second set (#eta > 0)","PE");
+l->AddEntry(g2neg,"second set (#eta < 0)","PE");
 l->Draw();
 
 TF1 *fit1pos = (TF1*)g1pos->GetFunction("fit");
@@ -119,7 +118,7 @@ lchi->Draw();
 TPaveText *l1 = new TPaveText(0.55,0.94,0.95,0.98,"NDC");
 l1->SetFillColor(0);
 l1->SetBorderSize(0);
-l1->AddText("Run3Winter22 (13.6 TeV)");
+l1->AddText("Winter22Run3 (13.6 TeV)");
 l1->SetTextFont(42);
 l1->SetTextSize(0.05);
 l1->Draw();
@@ -145,24 +144,9 @@ cms->SetFillColor(0);
 cms->Draw();
 
 char cname1[1024], cname2[1024];
-sprintf(cname1,"condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/V1_JECs_VERSUS_With_DZ_NM_cuts_and_PUreweight/InverseOfResponseVsRecoPt_AK4PUPPI_eta%.3fto%.3f.png",eta_min,eta_max);
-sprintf(cname2,"condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/V1_JECs_VERSUS_With_DZ_NM_cuts_and_PUreweight/InverseOfResponseVsRecoPt_AK4PUPPI_eta%.3fto%.3f.pdf",eta_min,eta_max);  
+sprintf(cname1,"InverseOfResponseVsRecoPt_AK4PUPPI_eta%.3fto%.3f.png",eta_min,eta_max);
+sprintf(cname2,"InverseOfResponseVsRecoPt_AK4PUPPI_eta%.3fto%.3f.pdf",eta_min,eta_max);  
 
 c->SaveAs(cname1);
 c->SaveAs(cname2);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
