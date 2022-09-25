@@ -31,9 +31,9 @@ void Plot_ResponseVsRefPt(){
 double eta_min = 3.839;
 double eta_max = 4.013;
 
-TFile *f1 = new TFile("condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/Comparison_of_3_methods_RawCut_DZ_NM/PUreweighted_NoPtCut_NoDZandNMcuts/l2.root"); 
-TFile *f2 = new TFile("condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/Comparison_of_3_methods_RawCut_DZ_NM/PUreweighted_8GeVPtCut_NoDZandNMcuts/l2.root");
-TFile *f3 = new TFile("condor_AK4PUPPI/Files/Run3Winter22_Flat2018QCD/Comparison_of_3_methods_RawCut_DZ_NM/PUreweighted_NoPtCut_withDZandLooserNMcuts/l2.root"); 
+TFile *f1 = new TFile("/path1/to/l2.root"); 
+TFile *f2 = new TFile("/path2/to/l2.root");
+TFile *f3 = new TFile("/path3/to/l2.root"); 
 
 char hname1pos[1024], hname1neg[1024], hname2pos[1024], hname2neg[1024], hname3pos[1024], hname3neg[1024];
 
@@ -72,8 +72,7 @@ c->SetBottomMargin(0.12);
 c->SetRightMargin(0.02);
 c->cd();
 
-
-g1pos->Draw("AP");
+/*g1pos->Draw("AP");
 g1pos->RemovePoint(0);
 g1pos->Draw("AP");
 g1pos->RemovePoint(0);
@@ -85,12 +84,13 @@ g1pos->Draw("AP");
 g1pos->RemovePoint(0);
 g1pos->Draw("AP");
 g1pos->RemovePoint(0);
+*/
 g1pos->Draw("AP");
-//g1neg->Draw("P SAME");
+g1neg->Draw("P SAME");
 g2pos->Draw("P SAME");
-//g2neg->Draw("P SAME");
+g2neg->Draw("P SAME");
 g3pos->Draw("P SAME");
-//g3neg->Draw("P SAME");
+g3neg->Draw("P SAME");
 
 g1pos->GetXaxis()->SetTitle("p_{T}^{ptcl} [GeV]");
 g1pos->GetXaxis()->SetTitleSize(0.05);
@@ -104,31 +104,29 @@ g1neg->GetYaxis()->SetRangeUser(0.4,1.4);
 g2pos->GetYaxis()->SetRangeUser(0.4,1.4);
 g2neg->GetYaxis()->SetRangeUser(0.4,1.4);
 
-//g1pos->GetXaxis()->SetRangeUser(9.9,105);
-
-TLegend *l = new TLegend(0.5,0.7,0.9,0.92,"");
+TLegend *l = new TLegend(0.5,0.5,0.9,0.92,"");
 l->SetTextSize(0.035);
 l->SetFillColor(0);
 l->SetBorderSize(0);
-l->AddEntry(g1pos,"No p_{T} cut, No NM cut","PE");
-l->AddEntry(g2pos,"8 GeV p_{T} cut, No NM cut","PE");
-l->AddEntry(g3pos,"No p_{T} cut, NM > 1","PE");
-//l->AddEntry((TObject*)0,"","");
-//l->AddEntry(g1neg,"#eta<0: No p_{T} cut, No NM cut","PE");
-//l->AddEntry(g2neg,"#eta<0: 8 GeV p_{T} cut, No NM cut","PE");
-//l->AddEntry(g3neg,"#eta<0: No p_{T} cut, NM > 1","PE");
+l->AddEntry(g1pos,"#eta>0: first set","PE");
+l->AddEntry(g2pos,"#eta>0: second set","PE");
+l->AddEntry(g3pos,"#eta>0: third set","PE");
+l->AddEntry((TObject*)0,"","");
+l->AddEntry(g1neg,"#eta<0: first set","PE");
+l->AddEntry(g2neg,"#eta<0: second set","PE");
+l->AddEntry(g3neg,"#eta<0: third set","PE");
 l->Draw();
 
 TPaveText *l1 = new TPaveText(0.55,0.94,0.95,0.98,"NDC");
 l1->SetFillColor(0);
 l1->SetBorderSize(0);
-l1->AddText("Run3Winter22 (13.6 TeV)");
+l1->AddText("Winter22Run3 (13.6 TeV)");
 l1->SetTextFont(42);
 l1->SetTextSize(0.05);
 l1->Draw();
 
 char eta_leg[1024];
-sprintf(eta_leg,"#bf{%.3f < #eta < %.3f}",eta_min, eta_max);
+sprintf(eta_leg,"#bf{%.3f < |#eta| < %.3f}",eta_min, eta_max);
 
 TPaveText *l2 = new TPaveText(0.75,0.15,0.9,0.25,"NDC");
 l2->SetFillColor(0);
@@ -148,25 +146,10 @@ cms->SetFillColor(0);
 cms->Draw();
 
 char cname1[1024], cname2[1024];
-sprintf(cname1,"Double_Peak_PUPPI/Comparison_of_3_methods_RawCut_DZ_NM/PositiveEta_ResponseVsGenPt_AK4PUPPI_eta%.3fto%.3f.png",eta_min,eta_max);
-sprintf(cname2,"Double_Peak_PUPPI/Comparison_of_3_methods_RawCut_DZ_NM/PositiveEta_ResponseVsGenPt_AK4PUPPI_eta%.3fto%.3f.pdf",eta_min,eta_max); 
+sprintf(cname1,"ResponseVsGenPt_AK4PUPPI_eta%.3fto%.3f.png",eta_min,eta_max);
+sprintf(cname2,"ResponseVsGenPt_AK4PUPPI_eta%.3fto%.3f.pdf",eta_min,eta_max); 
 
 c->SaveAs(cname1);
 c->SaveAs(cname2);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
