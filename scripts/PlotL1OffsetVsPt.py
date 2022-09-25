@@ -11,22 +11,19 @@ TDR.extraText2  = "Preliminary"
 
 class L1OffsetVsPt():
     def __init__(self, eta):
-        self.inputPath = "condor_AK4CHS/Files/Run3Winter22_Flat2018QCD/MeanOffsetOverPt/BeforeL1/"
-        self.outputPath = "condor_AK4CHS/Files/Run3Winter22_Flat2018QCD/MeanOffsetOverPt/BeforeL1/"
-        self.fname  = self.inputPath+"canvases_synchplot_ak4pfchs.root"
-        #self.fname  = self.inputPath+"L1ClosureVsPt_AK4CHS_UL16nonAPV.root"
-        #self.years = ["UL16APV", "UL16nonAPV", "UL17", "UL18"]
-	#self.years = ["UL16APV", "UL16nonAPV"]
+        self.inputPath = "Input/path/"
+        self.outputPath = "Output/path/"
+        self.fname  = self.inputPath+"canvases_synchplot_ak4puppi.root"
         self.mubins = ["0","10","20","30", "40", "50"]
         self.Hists = {
-                "0": {"legend": "0 #leq #mu < 10",   #"0 #leq #mu < 10"
-                        "color":  634, #634
+                "0": {"legend": "0 #leq #mu < 10",   
+                        "color":  634,
                         "marker": ROOT.kFullCircle,
                         "msize":  1.0,
                         "hname":  "histograms/OffMeantnpuRef_" + eta + "_0",
                       },
-                "10": {"legend": "10 #leq #mu < 20", #"10 #leq #mu < 20"
-                        "color":  802, #802
+                "10": {"legend": "10 #leq #mu < 20", 
+                        "color":  802, 
                         "marker": ROOT.kFullCircle,
                         "msize":  1.0,
                         "hname":  "histograms/OffMeantnpuRef_" + eta + "_1",
@@ -62,9 +59,8 @@ class L1OffsetVsPt():
         PlotXMax = 5500
         PlotYMin = -0.1
         PlotYMax = 1.5
-	#TDR.cms_lumi_TeV = TDR.commonScheme["legend"][year]+" Legacy"
-        TDR.cms_lumi_TeV = "Run3Winter22 "
-        TDR.extraText3.append("AK4, PF+CHS")
+        TDR.cms_lumi_TeV = "Winter22Run3 "
+        TDR.extraText3.append("AK4, PF+PUPPI")
         TDR.extraText3.append("")
 
         if eta=="BB": 
@@ -79,11 +75,8 @@ class L1OffsetVsPt():
         #f_ = ROOT.TFile(self.fname.replace("default",year))
         f_ = ROOT.TFile(self.fname)
         canv = tdrCanvas("L1OffsetVsPt", PlotXMin, PlotXMax, PlotYMin, PlotYMax, "p_{T}^{ptcl}[GeV]", "<Offset> / <p_{T}^{ptcl}>", square=kSquare, isExtraSpace=True)
-        #canv = tdrCanvas("L1OffsetVsPt", PlotXMin, PlotXMax, PlotYMin, PlotYMax, "p_{T}^{ptcl}[GeV]", "<offset> [GeV]", square=kSquare, isExtraSpace=True)
         canv.SetLogx(True)
-        leg = tdrLeg(0.60,0.60,0.89,0.89, textSize=0.04) #0.60,0.70,0.89,0.89
-        #leg = tdrLeg(0.60,0.70,0.89,0.89, textSize=0.04) #0.60,0.70,0.89,0.89
-        #leg = tdrLeg(0.50,0.60,0.79,0.89, textSize=0.035)	
+        leg = tdrLeg(0.60,0.60,0.89,0.89, textSize=0.04)	
 
         latex = rt.TLatex()
         latex.SetTextFont(42)
@@ -105,9 +98,8 @@ class L1OffsetVsPt():
 
         for bin in self.mubins:
 
-                #if (bin=="40" or bin=="50"): continue
-                if (bin=="50"): continue
-                #if(bin=="20" or bin=="30" or bin=="40" or bin=="50"): continue
+                #do not plot 50<mu<60 bin
+		if (bin=="50"): continue
 
                 color  = self.Hists[bin]["color"]
                 marker = self.Hists[bin]["marker"]
@@ -117,16 +109,13 @@ class L1OffsetVsPt():
  
                 for x in range(1,self.Hists[bin]["hist"].GetNbinsX()+1):
                     	if self.Hists[bin]["hist"].GetBinCenter(x)<15: self.Hists[bin]["hist"].SetBinContent(x,-999) 
-                    	#if self.Hists[bin]["hist"].GetBinCenter(x)>4000: self.Hists[bin]["hist"].SetBinContent(x,-999)
-                    	#if self.Hists[bin]["hist"].GetBinError(x)>2: self.Hists[bin]["hist"].SetBinContent(x,-999)
-                        #if (eta=="FF" and self.Hists[bin]["hist"].GetBinContent(x)>10): self.Hists[bin]["hist"].SetBinContent(x,-999)
 
                 tdrDraw(self.Hists[bin]["hist"], "P", marker=marker, mcolor=color )
                 leg.AddEntry(self.Hists[bin]["hist"], self.Hists[bin]["legend"], "lp")
 
         f_.Close()
-        canv.SaveAs(self.outputPath+"L1OffsetOverPtVsPt_Run3Winter22_AK4CHS_"+eta+".png")
-        canv.SaveAs(self.outputPath+"L1OffsetOverPtVsPt_Run3Winter22_AK4CHS_"+eta+".pdf")
+        canv.SaveAs(self.outputPath+"L1OffsetOverPtVsPt_Winter22Run3_AK4PUPPI_"+eta+".png")
+        canv.SaveAs(self.outputPath+"L1OffsetOverPtVsPt_Winter22Run3_AK4PUPPI_"+eta+".pdf")
         canv.Close()
         del TDR.extraText3[:]
 
