@@ -32,30 +32,30 @@
 
 void Combine_L1L2L3Closures(){
 
-TFile *f_UL16APV = new TFile("test_style/L1L2L3ClosureVsPt_AK8PUPPI_UL16APV.root","READ");
-TFile *f_UL16nonAPV = new TFile("test_style/L1L2L3ClosureVsPt_AK8PUPPI_UL16nonAPV.root","READ");
-TFile *f_UL17 = new TFile("test_style/L1L2L3ClosureVsPt_AK8PUPPI_UL17.root","READ");
-TFile *f_UL18 = new TFile("test_style/L1L2L3ClosureVsPt_AK8PUPPI_UL18.root","READ");
+TFile *f_UL16APV = new TFile("L1L2L3ClosureVsPt_AK4PUPPI_UL16APV.root","READ");
+TFile *f_UL16nonAPV = new TFile("L1L2L3ClosureVsPt_AK4PUPPI_UL16nonAPV.root","READ");
+TFile *f_UL17 = new TFile("L1L2L3ClosureVsPt_AK4PUPPI_UL17.root","READ");
+TFile *f_UL18 = new TFile("L1L2L3ClosureVsPt_AK4PUPPI_UL18.root","READ");
 
-TH1F *h_BB_UL16APV = (TH1F*)f_UL16APV->Get("ak8puppi/ClosureVsRefPt_JetEta0to1.3");
-TH1F *h_EI_UL16APV = (TH1F*)f_UL16APV->Get("ak8puppi/ClosureVsRefPt_JetEta1.3to2.5");
-TH1F *h_EO_UL16APV = (TH1F*)f_UL16APV->Get("ak8puppi/ClosureVsRefPt_JetEta2.5to3");
-TH1F *h_FF_UL16APV = (TH1F*)f_UL16APV->Get("ak8puppi/ClosureVsRefPt_JetEta3to5");
+TH1F *h_BB_UL16APV = (TH1F*)f_UL16APV->Get("ak4puppi/ClosureVsRefPt_JetEta0to1.3");
+TH1F *h_EI_UL16APV = (TH1F*)f_UL16APV->Get("ak4puppi/ClosureVsRefPt_JetEta1.3to2.5");
+TH1F *h_EO_UL16APV = (TH1F*)f_UL16APV->Get("ak4puppi/ClosureVsRefPt_JetEta2.5to3");
+TH1F *h_FF_UL16APV = (TH1F*)f_UL16APV->Get("ak4puppi/ClosureVsRefPt_JetEta3to5");
 
-TH1F *h_BB_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak8puppi/ClosureVsRefPt_JetEta0to1.3");
-TH1F *h_EI_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak8puppi/ClosureVsRefPt_JetEta1.3to2.5");
-TH1F *h_EO_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak8puppi/ClosureVsRefPt_JetEta2.5to3");
-TH1F *h_FF_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak8puppi/ClosureVsRefPt_JetEta3to5");
+TH1F *h_BB_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak4puppi/ClosureVsRefPt_JetEta0to1.3");
+TH1F *h_EI_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak4puppi/ClosureVsRefPt_JetEta1.3to2.5");
+TH1F *h_EO_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak4puppi/ClosureVsRefPt_JetEta2.5to3");
+TH1F *h_FF_UL16nonAPV = (TH1F*)f_UL16nonAPV->Get("ak4puppi/ClosureVsRefPt_JetEta3to5");
 
-TH1F *h_BB_UL17 = (TH1F*)f_UL17->Get("ak8puppi/ClosureVsRefPt_JetEta0to1.3");
-TH1F *h_EI_UL17 = (TH1F*)f_UL17->Get("ak8puppi/ClosureVsRefPt_JetEta1.3to2.5");
-TH1F *h_EO_UL17 = (TH1F*)f_UL17->Get("ak8puppi/ClosureVsRefPt_JetEta2.5to3");
-TH1F *h_FF_UL17 = (TH1F*)f_UL17->Get("ak8puppi/ClosureVsRefPt_JetEta3to5");
+TH1F *h_BB_UL17 = (TH1F*)f_UL17->Get("ak4puppi/ClosureVsRefPt_JetEta0to1.3");
+TH1F *h_EI_UL17 = (TH1F*)f_UL17->Get("ak4puppi/ClosureVsRefPt_JetEta1.3to2.5");
+TH1F *h_EO_UL17 = (TH1F*)f_UL17->Get("ak4puppi/ClosureVsRefPt_JetEta2.5to3");
+TH1F *h_FF_UL17 = (TH1F*)f_UL17->Get("ak4puppi/ClosureVsRefPt_JetEta3to5");
 
-TH1F *h_BB_UL18 = (TH1F*)f_UL18->Get("ak8puppi/ClosureVsRefPt_JetEta0to1.3");
-TH1F *h_EI_UL18 = (TH1F*)f_UL18->Get("ak8puppi/ClosureVsRefPt_JetEta1.3to2.5");
-TH1F *h_EO_UL18 = (TH1F*)f_UL18->Get("ak8puppi/ClosureVsRefPt_JetEta2.5to3");
-TH1F *h_FF_UL18 = (TH1F*)f_UL18->Get("ak8puppi/ClosureVsRefPt_JetEta3to5");
+TH1F *h_BB_UL18 = (TH1F*)f_UL18->Get("ak4puppi/ClosureVsRefPt_JetEta0to1.3");
+TH1F *h_EI_UL18 = (TH1F*)f_UL18->Get("ak4puppi/ClosureVsRefPt_JetEta1.3to2.5");
+TH1F *h_EO_UL18 = (TH1F*)f_UL18->Get("ak4puppi/ClosureVsRefPt_JetEta2.5to3");
+TH1F *h_FF_UL18 = (TH1F*)f_UL18->Get("ak4puppi/ClosureVsRefPt_JetEta3to5");
 
 const int nBins = 51;
 
@@ -122,10 +122,10 @@ for(int i=1; i<=h_FF_allyears->GetNbinsX(); i++)
 
 }
 
-TFile *fout = new TFile("test_style/L1L2L3ClosureVsPt_AK8PUPPI_ULRun2.root","RECREATE"); 
+TFile *fout = new TFile("L1L2L3ClosureVsPt_AK4PUPPI_ULRun2.root","RECREATE"); 
 fout->cd();
 
-TDirectoryFile *dir = new TDirectoryFile("ak8puppi","ak8puppi");
+TDirectoryFile *dir = new TDirectoryFile("ak4puppi","ak4puppi");
 dir->cd();
 
 h_BB_allyears->Write();
