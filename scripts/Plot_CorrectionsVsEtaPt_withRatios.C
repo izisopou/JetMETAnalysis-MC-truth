@@ -37,10 +37,8 @@ cms1->SetFillColor(0);
 cms1->SetBorderSize(0);
 cms1->SetTextSize(0.04);
 
-//TPaveText *cms2 = new TPaveText(0.73,0.96,0.88,0.99,"NDC"); //UL16APV
-//TPaveText *cms2 = new TPaveText(0.74,0.96,0.89,0.99,"NDC"); //UL16nonAPV
-TPaveText *cms2 = new TPaveText(0.765,0.96,0.915,0.99,"NDC"); //UL17,8
-cms2->AddText("#bf{2018 Legacy (13 TeV)}");
+TPaveText *cms2 = new TPaveText(0.74,0.96,0.89,0.99,"NDC");
+cms2->AddText("Winter22Run3 (13.6 TeV)");
 cms2->SetFillColor(0);
 cms2->SetBorderSize(0);
 cms2->SetTextSize(0.04);
@@ -55,13 +53,13 @@ char Etabins[15][100]={"|#eta| < 0.087 , #rho = 15 GeV/area", "0.261 < |#eta| < 
 char Ptbins[9][100]={"p_{T}^{raw} = 20 GeV", "p_{T}^{raw} = 30 GeV", "p_{T}^{raw} = 50 GeV", "p_{T}^{raw} = 100 GeV", "p_{T}^{raw} = 200 GeV", "p_{T}^{raw} = 500 GeV", "p_{T}^{raw} = 750 GeV", "p_{T}^{raw} = 1000 GeV", "p_{T}^{raw} = 2000 GeV"};
 
 
-TFile *f1 = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4PUPPI/Files/UL2018/Corrections/Corrections_UL18_ak4puppi_Final_poseta.root");
+TFile *f1 = new TFile("path1/to/Corrections_ak4puppi_positive_eta.root");
 
-TFile *f2 = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4PUPPI/Files/UL2018/Corrections/Corrections_UL18_ak4puppi_Final_negeta.root");
+TFile *f2 = new TFile("path1/to/Corrections_ak4puppi_negative_eta.root");
 
-TFile *f3 = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4PUPPI/Files/UL2018/Corrections/Corrections_UL18_ak4puppi_diffconfig_poseta.root");
+TFile *f3 = new TFile("path2/to/Corrections_ak4puppi_positive_eta.root");
 
-TFile *f4 = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4PUPPI/Files/UL2018/Corrections/Corrections_UL18_ak4puppi_diffconfig_negeta.root");
+TFile *f4 = new TFile("path2/to/Corrections_ak4puppi_negative_eta.root");
 
 
 //Corrections Vs Eta
@@ -104,8 +102,8 @@ for(int c=0; c<=8; c++)
       	cc1->GetYaxis()->SetTitleSize(0.058);
       	cc1->GetXaxis()->SetTitleSize(0.058);
       	cc1->GetXaxis()->SetTitleOffset(0.80);
-      	cc1->GetYaxis()->SetRangeUser(0.901,2.1);//2.1
-      	cc2->GetYaxis()->SetRangeUser(0.901,2.1);//2.1
+      	cc1->GetYaxis()->SetRangeUser(0.901,2.1);
+      	cc2->GetYaxis()->SetRangeUser(0.901,2.1);
 	cc1->SetLineColor(kBlack);
 	cc2->SetLineColor(kRed);
 	cc1->SetLineWidth(2);
@@ -127,10 +125,8 @@ for(int c=0; c<=8; c++)
 	l->SetBorderSize(0);
 	l->SetTextSize(0.05);
 	//l->AddEntry((TObject*)0,Ptbins[c],"");
-	l->AddEntry(cc1,"v15 in MiniAODv2","L");
-	l->AddEntry(cc2,"v15 with different config","L");
-	//l->AddEntry(cc1,"Summer20UL16nonAPV: FlatPU","L");
-	//l->AddEntry(cc2,"Summer20UL16nonAPV: PremixedPU","L");
+	l->AddEntry(cc1,"first set of JEC","L");
+	l->AddEntry(cc2,"second set of JEC","L");
 	l->AddEntry((TObject*)0,"AK4 PUPPI jets","");
 	l->Draw();
 
@@ -143,8 +139,7 @@ for(int c=0; c<=8; c++)
 	h_ratio->Divide(cc2);
 
 	h_ratio->GetYaxis()->SetRangeUser(0.901, 1.099);
-	//h_ratio->GetYaxis()->SetTitle("FlatPU / Premixed PU");
-	h_ratio->GetYaxis()->SetTitle("MiniAODv2 / diff. config");
+	h_ratio->GetYaxis()->SetTitle("first set / second set");
 	h_ratio->GetXaxis()->SetTitle("#eta");
       	h_ratio->GetYaxis()->SetTitleOffset(0.6);
       	h_ratio->GetYaxis()->SetTitleSize(0.1);
@@ -163,9 +158,9 @@ for(int c=0; c<=8; c++)
 	//line->Draw("same");
 
 
-	sprintf(cname_vsEta_1, "/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4PUPPI/Files/UL2018/Corrections/CorrectionVsEta_Summer20UL18_AK4PUPPI_Final_vs_diffconfig_%d.png", c);
+	sprintf(cname_vsEta_1, "CorrectionVsEta_AK4PUPPI_first_set_vs_second_set_%d.png", c);
 
-	sprintf(cname_vsEta_2, "/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4PUPPI/Files/UL2018/Corrections/CorrectionVsEta_Summer20UL18_AK4PUPPI_Final_vs_diffconfig_%d.pdf", c);
+	sprintf(cname_vsEta_2, "CorrectionVsEta_AK4PUPPI_first_set_vs_second_set_%d.pdf", c);
 	canvas_vsEta->SaveAs(cname_vsEta_1);
 	canvas_vsEta->SaveAs(cname_vsEta_2);
 	
@@ -192,7 +187,7 @@ ratio_panel_vsPt->SetTicky(1);
 ratio_panel_vsPt->SetRightMargin(0.02);
 ratio_panel_vsPt->SetLeftMargin(0.12);
 ratio_panel_vsPt->SetTopMargin(0.);
-ratio_panel_vsPt->SetBottomMargin(0.35);//0.25
+ratio_panel_vsPt->SetBottomMargin(0.35);
 ratio_panel_vsPt->Draw();
 
 for(int c=0; c<=14; c++)
@@ -212,8 +207,8 @@ for(int c=0; c<=14; c++)
 	cc1_neg->SetTitle("");
 	cc2_neg->SetTitle("");
 	cc1_pos->GetXaxis()->SetTitle("p_{T}^{raw} [GeV]");
-      	cc1_pos->GetYaxis()->SetTitle("L1 #times L2L3 Corr. Factor");
-	//cc1_pos->GetYaxis()->SetTitle("L2L3 Corr. Factor");
+      	//cc1_pos->GetYaxis()->SetTitle("L1 #times L2L3 Corr. Factor");
+	cc1_pos->GetYaxis()->SetTitle("L2L3 Corr. Factor");
       	cc1_pos->GetYaxis()->SetTitleOffset(1.);
       	cc1_pos->GetYaxis()->SetTitleSize(0.058);
       	cc1_pos->GetXaxis()->SetTitleSize(0.05);
@@ -314,20 +309,12 @@ for(int c=0; c<=14; c++)
 	l->SetBorderSize(0);
 	l->SetTextSize(0.05);
 	l->AddEntry((TObject*)0,Etabins[c],"");
-	l->AddEntry(cc1_pos,"Final JEC (#eta>0)","L");
-	l->AddEntry(cc2_pos,"Previous JEC in DPnote (#eta>0)","L");
+	l->AddEntry(cc1_pos,"first set of JEC (#eta>0)","L");
+	l->AddEntry(cc2_pos,"second set of JEC (#eta>0)","L");
 	l->AddEntry((TObject*)0,"","");
-	l->AddEntry(cc1_neg,"Final JEC (#eta<0)","L");
-	l->AddEntry(cc2_neg,"Previous JEC in DPnote (#eta<0)","L");
-
-
-	//l->AddEntry(cc1_pos,"Summer20UL16nonAPV: FlatPU (#eta>0)","L");
-	//l->AddEntry(cc2_pos,"Summer20UL16nonAPV: PremixedPU (#eta>0)","L");
-	//l->AddEntry((TObject*)0,"","");
-	//l->AddEntry(cc1_neg,"Summer20UL16nonAPV: FlatPU (#eta<0)","L");
-	//l->AddEntry(cc2_neg,"Summer20UL16nonAPV: PremixedPU (#eta<0)","L");
-
-	l->AddEntry((TObject*)0,"AK4 CHS jets","");
+	l->AddEntry(cc1_neg,"first set of JEC (#eta<0)","L");
+	l->AddEntry(cc2_neg,"second set of JEC (#eta<0)","L");
+	l->AddEntry((TObject*)0,"AK4 PUPPI jets","");
 	l->Draw();
 
 	cms1->Draw();
@@ -342,8 +329,7 @@ for(int c=0; c<=14; c++)
 
 	h_ratio_pos->GetYaxis()->SetRangeUser(0.971, 1.029);
 	h_ratio_neg->GetYaxis()->SetRangeUser(0.971, 1.029);
-	//h_ratio_pos->GetYaxis()->SetTitle("FlatPU / PremixedPU");
-	h_ratio_pos->GetYaxis()->SetTitle("Final / Previous");
+	h_ratio_pos->GetYaxis()->SetTitle("first set / second set");
 	h_ratio_pos->GetXaxis()->SetTitle("p_{T}^{raw} [GeV]");
       	h_ratio_pos->GetYaxis()->SetTitleOffset(0.6);
       	h_ratio_pos->GetYaxis()->SetTitleSize(0.1);
@@ -399,9 +385,9 @@ for(int c=0; c<=14; c++)
 	lratio->AddEntry(h_ratio_neg,"#eta<0","P");
 	lratio->Draw();
 
-	sprintf(cname_vsPt_1, "/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4CHS/Files/UL2018/Corrections_Final_vs_DPnote/Overall/CorrectionVsPt_Summer20UL18_AK4CHS_Final_vs_DPnote_%d.png", c);
+	sprintf(cname_vsPt_1, "CorrectionVsPt_AK4PUPPI_first_set_vs_second_set_%d.png", c);
 
-	sprintf(cname_vsPt_2, "/afs/cern.ch/work/i/izisopou/public/JEC/CMSSW_10_5_0/src/condor_AK4CHS/Files/UL2018/Corrections_Final_vs_DPnote/Overall/CorrectionVsPt_Summer20UL18_AK4CHS_Final_vs_DPnote_%d.pdf", c);
+	sprintf(cname_vsPt_2, "CorrectionVsPt_AK4PUPPI_first_set_vs_second_set_%d.pdf", c);
 	canvas_vsPt->SaveAs(cname_vsPt_1);
 	canvas_vsPt->SaveAs(cname_vsPt_2);	
 }
