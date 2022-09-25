@@ -30,8 +30,8 @@ using namespace std;
 
 void Plot_CorrectedResponseVsRefPt(){
 
-TFile *f1 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run3Winter22/Flat2018QCD/AK4CHS/Step4_applyPUPPIcorr/Merged.root"); 
-TFile *f2 = new TFile("/eos/cms/store/group/phys_jetmet/ilias/JEC_Run3Winter22/Flat2018QCD/AK4PUPPI/Step4_pTcut6GeV/Merged.root"); 
+TFile *f1 = new TFile("/path1/in/eos/to/Step4/Merged.root"); 
+TFile *f2 = new TFile("/path2/in/eos/to/Step4/Merged.root"); 
 
 double ptbins[52] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 20, 23, 27, 30, 35, 40, 45, 57, 72, 90, 120, 150, 200, 300, 400, 550,
 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000};
@@ -204,7 +204,6 @@ char eta_leg[1024];
 sprintf(eta_leg,"%.3f < |#eta| < %.3f",eta_min,eta_max);
 
 TLegend *l2 = new TLegend(0.15,0.15,0.3,0.22,"");
-//TLegend *l2 = new TLegend(0.15,0.8,0.3,0.9,"");
 l2->SetTextSize(0.05);
 l2->SetFillColor(0);
 l2->SetBorderSize(0);
@@ -234,7 +233,7 @@ line2->Draw("same");
 line3->Draw("same");
 
 TPaveText *sample = new TPaveText(0.63,0.94,0.98,0.98,"NDC");
-sample->AddText("Run3Winter22 (13.6 TeV)");
+sample->AddText("Winter22Run3 (13.6 TeV)");
 sample->SetTextFont(42);
 sample->SetTextSize(0.04);
 sample->SetBorderSize(0);
@@ -242,8 +241,8 @@ sample->SetFillColor(0);
 sample->Draw();
 
 char cname1[1024], cname2[1024];
-sprintf(cname1,"CHS_vs_PUPPI_forAnalysis/CorrResponseVsGenPt_eta%.3fto%.3f.png",eta_min,eta_max);
-sprintf(cname2,"CHS_vs_PUPPI_forAnalysis/CorrResponseVsGenPt_eta%.3fto%.3f.pdf",eta_min,eta_max);
+sprintf(cname1,"CorrResponseVsGenPt_eta%.3fto%.3f.png",eta_min,eta_max);
+sprintf(cname2,"CorrResponseVsGenPt_eta%.3fto%.3f.pdf",eta_min,eta_max);
 c->SaveAs(cname1);
 c->SaveAs(cname2);
 
