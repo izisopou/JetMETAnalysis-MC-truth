@@ -41,8 +41,8 @@ jet_match_x \
    -outputPath ./ \
    -npvRhoNpuBinWidth 10 \
    -NBinsNpvRhoNpu 9 \
-   -MCPUReWeighting MyMCPUHisto_FlatPU.root \
-   -DataPUReWeighting MyDataPUHisto.root \
+   -MCPUReWeighting MyMCPUHisto_Winter22Run3_Flat2018_FlatPU.root \
+   -DataPUReWeighting MyDataPUHisto_2022.root \
    -useweight false \
    -nrefmax 3 \
    -doNotSave false

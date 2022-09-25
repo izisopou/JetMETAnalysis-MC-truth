@@ -29,8 +29,8 @@ jet_correction_analyzer_x \
    -nbinsrelrsp 60 \
    -relrspmin 0.0 \
    -relrspmax 3.0 \
-   -MCPUReWeighting MyMCPUHisto_PremixedPU.root \
-   -DataPUReWeighting MyDataPUHisto.root \
+   -MCPUReWeighting MyMCPUHisto_Winter22Run3_Flat2018_PremixedPU.root \
+   -DataPUReWeighting MyDataPUHisto_2022.root \
    -nrefmax 3
 
 cp Closure_ak4pfchs.root ${Output}/Closure_ak4pfchs${ID}.root

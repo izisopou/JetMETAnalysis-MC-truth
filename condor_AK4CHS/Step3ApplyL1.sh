@@ -36,7 +36,7 @@ jet_response_analyzer_x jra.config \
    -nbinsrelrsp 60 \
    -doflavor false \
    -flavorDefinition phys \
-   -MCPUReWeighting MyMCPUHisto_PremixedPU.root \
+   -MCPUReWeighting MyMCPUHisto_Winter22Run3_Flat2018_PremixedPU.root \
    -MCPUHistoName pileup \
    -DataPUReWeighting MyDataPUHisto_2022.root \
    -DataPUHistoName pileup \
