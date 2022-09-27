@@ -12,17 +12,6 @@
 // it will produce validation plots as well.
 ///////////////////////////////////////////////////////////////////
 
-
-///////////////////////////////////////////////////////////////////
-//
-// The code as is produces histograms with the corrections vs pT and eta
-// There are lines with the comment "to plot vs rho instead of pt" that are commented out
-// If you remove their comment out and instead comment out their above line then the L1 corrections vs rho (for a fixed pt value) 
-//instead of pt will be produced.
-//
-///////////////////////////////////////////////////////////////////
-
-
 #include "JetMETAnalysisMCtruth/JetUtilities/interface/Style.h"
 #include "JetMETAnalysisMCtruth/JetUtilities/interface/CommandLine.h"
 #include "JetMETAnalysisMCtruth/JetUtilities/interface/JetInfo.hh"
@@ -181,7 +170,7 @@ void analyzeAlgo(TString algo, CommandLine & cl){
   bool            combineAlgs  = cl.getValue<bool>     ("combineAlgs",          false);
   TString         flavor       = cl.getValue<TString>  ("flavor",                  "");
   string          outputDir    = cl.getValue<string>   ("outputDir",         "images");
-  vector<TString> outputFormat = cl.getVector<TString> ("outputFormat",        ".png");
+  vector<TString> outputFormat = cl.getVector<TString> ("outputFormat",        ".pdf");
   bool            tdr          = cl.getValue<bool>     ("tdr",                   true);
   double          CMEnergy     = cl.getValue<double>   ("CMEnergy",             13000);
 
@@ -358,10 +347,10 @@ TCanvas * getCorrectionVsEtaCanvas(TString algo, FactorizedJetCorrector * jetCor
       TH1F * cc = new TH1F(hstr,hstr,NETA,veta);
       for (int b = 1; b <= cc->GetNbinsX(); b++){
 	jetCorr->setJetPt(PtVals[c]);
-	//jetCorr->setJetPt(fixedRho);	//to plot vs eta for rho bins instead of pt bins
+	//jetCorr->setJetPt(fixedRho);	//for fixed Pt
 	jetCorr->setJetEta(cc->GetBinCenter(b));
     jetCorr->setRho(fixedRho);
-    //jetCorr->setRho(PtVals[c]); //to plot vs eta for rho bins instead of pt bins	
+    //jetCorr->setRho(PtVals[c]);	//for fixed Pt
     jetCorr->setJetA(TMath::Pi()*TMath::Power(JetInfo(algo).coneSize/10.0,2));
 	double cor = jetCorr->getCorrection();
 	if (std::isnan((double)cor) || std::isinf((double)cor) ){
@@ -391,7 +380,7 @@ TCanvas * getCorrectionVsEtaCanvas(TString algo, FactorizedJetCorrector * jetCor
 	ptstr.Form("p_{T}=%f GeV",PtVals[c]);
       else 
 	ptstr.Form("p_{T}=%.0f GeV",PtVals[c]);
-	//ptstr.Form("#rho=%.0f GeV",PtVals[c]);	//to plot vs eta for rho bins instead of pt bins
+	//ptstr.Form("#rho=%.0f GeV",PtVals[c]);	//for fixed Pt
 	
       TPaveText * pave = new TPaveText(0.3,0.7,0.8,0.9,"NDC");
       //pave->AddText("APV UL 2016");	
@@ -948,7 +937,7 @@ EtaVals.push_back(5.191);
 
   //Create the canvas with multiple pads
   TString ss("CorrectionVsPt_Overview");
-  //TString ss("CorrectionVsRho_Overview");	//to plot vs rho instead of pt
+  //TString ss("CorrectionVsRho_Overview");	//for fixed Pt
   ss += suffix;
   TCanvas *ovp = new TCanvas(ss,ss,1200,800);
 //  ovp->Divide(6,4);
@@ -962,15 +951,15 @@ EtaVals.push_back(5.191);
 
       //Create and fill the histo
       TString hstr; hstr.Form("PtSF_%d",c);
-      //TString hstr; hstr.Form("RhoSF_%d",c);	//to plot vs rho instead of pt
+      //TString hstr; hstr.Form("RhoSF_%d",c);	//for fixed Pt
       TH1F * cc = new TH1F(hstr,hstr,NPtBinsHLT,vpt_HLT);
-      //TH1F * cc = new TH1F(hstr,hstr,40,0,40);	//to plot vs rho instead of pt
+      //TH1F * cc = new TH1F(hstr,hstr,40,0,40);	//for fixed Pt
       for (int b = 1; b <= cc->GetNbinsX(); b++){
 	jetCorr->setJetPt(cc->GetBinCenter(b));
-	//jetCorr->setJetPt(50.);	//to plot vs rho instead of pt
+	//jetCorr->setJetPt(50.);	//for fixed Pt
 	jetCorr->setJetEta(EtaVals[c]);
     jetCorr->setRho(fixedRho);
-    //jetCorr->setRho(cc->GetBinCenter(b));	//to plot vs rho instead of pt
+    //jetCorr->setRho(cc->GetBinCenter(b));	//for fixed Pt
     jetCorr->setJetA(TMath::Pi()*TMath::Power(JetInfo(algo).coneSize/10.0,2));
 	double cor = jetCorr->getCorrection();
 	if (std::isnan((double)cor) ||  std::isinf((double)cor) ){
@@ -986,7 +975,7 @@ EtaVals.push_back(5.191);
 	cc->SetBinError(b,0.);
       }//for pt bins
       cc->GetXaxis()->SetTitle("p_{T}^{Reco}");
-      //cc->GetXaxis()->SetTitle("#rho");	//to plot vs rho instead of pt
+      //cc->GetXaxis()->SetTitle("#rho");	//for fixed Pt
       cc->GetXaxis()->SetRangeUser(15.,4000.);
       cc->GetYaxis()->SetTitle("Corr. Factor");
 //    cc->GetXaxis()->SetRangeUser(20.,2000.);
@@ -1006,7 +995,7 @@ EtaVals.push_back(5.191);
       pave->SetTextSize(0.08);
 
       (ovp->cd(c+1))->SetLogx(1);
-      //ovp->cd(c+1);	//to plot vs rho instead of pt
+      //ovp->cd(c+1);	//for fixed Pt
       //cc->SetFillColor(30);
       //cc->SetFillStyle(3001);
       cc->SetLineColor(kRed);
@@ -1357,12 +1346,12 @@ TCanvas * getCorrectionMap(TString algo, FactorizedJetCorrector * jetCorr,
 //---------------------------------------------------------------------
 TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString suffix, bool doATLAS) {
     _jec = jetCorr;
-    TF1 *_jecpt = new TF1("jecpt",fJECPt,0,4000,3);
+    TF1 *_jecpt = new TF1("jecpt",fJECPt,0,6500,3);
 
   // doATLAS:
   // If true, these values represent energies
   // If false, these values represent pt
-  double vars[] = {30, 60, 110, 400, 2000};
+  double vars[] = {15, 30, 90, 300, 1000, 3000};
   const int nvar = sizeof(vars)/sizeof(vars[0]);
   const int neta = 48;//52;
   const int jeta = TMath::Pi()*0.5*0.5;
@@ -1376,12 +1365,13 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
     TGraph *g = new TGraph(0); gs[ivar] = g;
     for (int ieta = 0; ieta != neta; ++ieta) {
       
+      if(ieta==26 || ieta==28 || ieta==31 || ieta==33 || ieta==35 || ieta==37 || ieta==39 || ieta==41 || ieta==43 || ieta==45 || ieta==47 || ieta==48) continue;
       double eta = (ieta+0.5)*0.1;
       double dependent_variable;
       if(doATLAS) dependent_variable = independent_variable / cosh(eta);
       else dependent_variable = independent_variable * cosh(eta);
       if ((doATLAS && dependent_variable > 10. && independent_variable < 4000.) ||
-          (independent_variable > 10. && dependent_variable < 4000.)) {
+          (independent_variable > 10. && dependent_variable < 6500.)) {
         double jes;
         if(doATLAS) jes = getResp(_jecpt, dependent_variable, eta, jeta, mu);
         else jes = getResp(_jecpt, independent_variable, eta, jeta, mu);
@@ -1395,10 +1385,10 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   //TCanvas *c1 = new TCanvas("c1","c1",600,600);
   //TCanvas *c1 = new TCanvas("c1","c1",800,600); // ATLAS shape
   TH1D *h;
-  if(doATLAS) h = new TH1D("h",";Jet |#eta|;Jet response at PF scale",40,0,4.8);
-  else h = new TH1D("h",";Jet |#eta|;Simulated jet response",40,0,4.8);
-  h->SetMaximum(1.25);
-  h->SetMinimum(0.5);
+  if(doATLAS) h = new TH1D("h",";Jet |#eta|;Jet response at PF scale",40,0,4.9);
+  else h = new TH1D("h",";|#eta^{jet}|;Simulated jet response",40,0,4.9);
+  h->SetMaximum(1.2);
+  h->SetMinimum(0.32);
   //h->Draw("AXIS");
   TString ss;
   if(doATLAS) ss+="ATLASresponse";
@@ -1406,16 +1396,16 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   ss += suffix;
   TCanvas *c1 = tdrCanvas(ss.Data(),h,14,0,doATLAS ? kRectangular : kSquare);
 
-  TLegend *leg1 = tdrLeg(0.25,0.25,0.55,0.30);
-  TLegend *leg2 = tdrLeg(0.25,0.20,0.55,0.25);
-  TLegend *leg3 = tdrLeg(0.25,0.15,0.55,0.20);
-  TLegend *leg4 = tdrLeg(0.55,0.25,0.85,0.30);
-  TLegend *leg5 = tdrLeg(0.55,0.20,0.85,0.25);
-  TLegend *legs[nvar] = {leg1, leg2, leg3, leg4, leg5};
+  TLegend *leg1 = tdrLeg(0.25,0.27,0.55,0.32);
+  TLegend *leg2 = tdrLeg(0.25,0.22,0.55,0.27);
+  TLegend *leg3 = tdrLeg(0.25,0.17,0.55,0.22);
+  TLegend *leg4 = tdrLeg(0.55,0.27,0.85,0.32);
+  TLegend *leg5 = tdrLeg(0.55,0.22,0.85,0.27);
+  TLegend *leg6 = tdrLeg(0.55,0.17,0.85,0.22);
+  TLegend *legs[nvar] = {leg1, leg2, leg3, leg4, leg5, leg6};
 
-  int colors[] = {kGreen+2, kBlack, kOrange+1, kBlue, kRed+1};
-  int markers[] = {kFullCircle, kOpenCircle, kFullSquare, kOpenSquare,
-       kFullTriangleUp};
+  int colors[] = {kBlack, kGreen+3, kOrange+1, kViolet+1, kAzure+2, kRed+1};
+  int markers[] = {kFullStar, kFullSquare, kFullCircle, kFullDiamond, kFullCross, kFullTriangleUp};
 
   for (int ivar = 0; ivar != nvar; ++ivar) {
     
@@ -1426,7 +1416,8 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
 
     //TLegend *leg = (ie<3 ? leg1 : leg2);
     TLegend *leg = legs[ivar];
-    leg->SetTextColor(colors[ivar]);
+    //leg->SetTextColor(colors[ivar]);
+    leg->SetTextFont(42);
     TString var_name;
     if(doATLAS) var_name = "E";
     else var_name = "p_{T}";
@@ -1436,17 +1427,19 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
 
   TLatex *tex = new TLatex();
   tex->SetNDC();
-  tex->SetTextSize(0.045);
+  tex->SetTextSize(0.04);
+  tex->SetTextFont(42);
   
   TLine *l = new TLine();
-  l->DrawLine(1.3,0.7,1.3,1.1);
-  l->DrawLine(2.5,0.7,2.5,1.1);
-  l->DrawLine(3.0,0.7,3.0,1.1);
-  l->DrawLine(4.5,0.7,4.5,1.1);
+  l->DrawLine(1.3,0.58,1.3,1.04);
+  l->DrawLine(2.5,0.58,2.5,1.04);
+  l->DrawLine(3.0,0.58,3.0,1.04);
+  l->DrawLine(4.75,0.58,4.75,1.04);
   l->SetLineStyle(kDashed);
-  l->DrawLine(3.2,0.7,3.2,1.1);
+  l->DrawLine(3.12,0.58,3.12,1.04);
 
-  TLatex* tex_tmp = tex->DrawLatex(0.35,0.86,"2016 JES: "+JetInfo::get_legend_title(algo));
+  //TLatex* tex_tmp = tex->DrawLatex(0.35,0.86,"2016 JES: "+JetInfo::get_legend_title(algo));
+  TLatex* tex_tmp = tex->DrawLatex(0.18,0.872,"2022 JES: AK4, PF+PUPPI");
   //The size of the x-axis in axis coordinates
   double x_axis_width = c1->GetUxmax()-c1->GetUxmin();
   //The width of the pad in x-axis coordinates = x-axis width/percentage that the x-axis takes up in NDC coordinates
@@ -1454,17 +1447,17 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   //The blank space on either size of the text in NDC coordinates starting from the left margin (i.e. in the frame)
   double side_padding = (1.0-c1->GetRightMargin()-c1->GetLeftMargin()-(tex_tmp->GetXsize()/total_width))/2.0;
   //Add back in the left margin so that the text is centered in the frame and not the pad
-  tex_tmp->SetX(c1->GetLeftMargin()+side_padding);
-  tex_tmp->Draw("same");
+  //tex_tmp->SetX(c1->GetLeftMargin()+side_padding);
+  //tex_tmp->Draw("same");
 
-  tex->DrawLatex(0.19,0.78,"Barrel");
-  tex->DrawLatex(0.47,0.78,"Endcap"); //0.42
-  tex->DrawLatex(0.73,0.78,"Forward");
+  tex->DrawLatex(0.21,0.82,"Barrel");
+  tex->DrawLatex(0.47,0.82,"Endcap"); 
+  tex->DrawLatex(0.72,0.82,"Forward");
 
-  tex->DrawLatex(0.21,0.73,"BB");
-  tex->DrawLatex(0.43,0.73,"EC1");
-  tex->DrawLatex(0.57,0.73,"EC2");
-  tex->DrawLatex(0.77,0.73,"HF");
+  tex->DrawLatex(0.23,0.78,"BB");
+  tex->DrawLatex(0.42,0.78,"EC1");
+  tex->DrawLatex(0.563,0.78,"EC2");
+  tex->DrawLatex(0.76,0.78,"HF");
 
   return c1;
 }
@@ -1480,6 +1473,7 @@ FactorizedJetCorrector * getFactorizedCorrector(TString algo, CommandLine & cl, 
   bool    useL3Cor     = cl.getValue<bool>   ("useL3Cor"     , false   );
   bool    useL2L3ResCor= cl.getValue<bool>   ("useL2L3ResCor", false   );
           fixedRho     = cl.getValue<double> ("fixedRho"     , 15.0    );
+	  //fixedRho     = cl.getValue<double> ("fixedRho"     , 100.0    );	//for fixed Pt
 
   if (era.length()==0) {
     cout<<"ERROR flag -era must be specified"<<endl;
