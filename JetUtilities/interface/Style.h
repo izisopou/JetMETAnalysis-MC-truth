@@ -164,9 +164,9 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX, bool verbose )
 
   // text sizes and text offsets with respect to the top frame
   // in unit of the top margin size
-  float lumiTextSize     = 0.6;
+  float lumiTextSize     = 0.5; //0.6
   float lumiTextOffset   = 0.2;
-  float cmsTextSize      = 0.75;
+  float cmsTextSize      = 0.65; //0.75
   //float cmsTextOffset    = 0.1;  // only used in outOfFrame version
 
   float relPosX    = 0.045;
@@ -261,7 +261,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX, bool verbose )
     }
   else if ( iPeriod==14 )
     {
-      lumiText += "2016 early Legacy (13 TeV)"; //#bf{#it{UL 2018}} 
+      lumiText += "Winter22Run3 (13.6 TeV)"; //#bf{#it{UL 2018}} 
     }
   else if ( iPeriod==15 )
     {
@@ -280,7 +280,8 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX, bool verbose )
   latex.SetTextFont(42);
   latex.SetTextAlign(31); 
   latex.SetTextSize(lumiTextSize*t);    
-  latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiText);
+  //latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiText);
+  latex.DrawLatex(0.95,1-t+lumiTextOffset*t,lumiText);
 
   if( outOfFrame )
     {
@@ -356,7 +357,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX, bool verbose )
      latex.SetTextSize(extraTextSize*t);
      latex.SetTextAlign(align_);
      if(extraText2!="") {
-       latex.DrawLatex(posX_, posY_, extraText+" "+extraText2+" "+extraText3);
+       latex.DrawLatex(posX_-0.02, posY_, extraText+" "+extraText2+" "+extraText3);
      }
      else {
        latex.DrawLatex(posX_, posY_, extraText);
@@ -562,7 +563,7 @@ inline void cmsPrel(int energy = 8, double intLumi=-1, bool wide = false) {
 
   TLatex *latex = new TLatex();
   latex->SetNDC();
-  latex->SetTextSize(0.045);
+  latex->SetTextSize(0.035); //0.045
   
   latex->SetTextAlign(31); // align right
   latex->DrawLatex(wide ? 0.98 : 0.95, 0.96, Form("#sqrt{s} = %i TeV",energy));
@@ -582,7 +583,7 @@ inline void cmsPrelim(double intLUMI = 0) {
    const float LUMINOSITY = intLUMI;
    TLatex latex;
    latex.SetNDC();
-   latex.SetTextSize(0.045);
+   latex.SetTextSize(0.035);
 
    latex.SetTextAlign(31); // align right
    latex.DrawLatex(0.93,0.96,"#sqrt{s} = 13 TeV");
