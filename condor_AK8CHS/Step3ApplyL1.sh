@@ -44,7 +44,7 @@ jet_response_analyzer_x jra.config \
    -useweight false \
    -nrefmax 3 \
    -algs ak8pfchsl1 \
-   -drmax 0.2 \
+   -drmax 0.4 \
    -relrspmin 0.0 \
    -relrspmax 3.0 \
    -jtptmin 0
