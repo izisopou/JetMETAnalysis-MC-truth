@@ -24,7 +24,7 @@ jet_correction_analyzer_x \
    -levels 1 2 \
    -useweight false \
    -algs ak8pfchs \
-   -drmax 0.2 \
+   -drmax 0.4 \
    -evtmax 0 \
    -nbinsrelrsp 60 \
    -relrspmin 0.0 \
