@@ -18,49 +18,57 @@ from array import array
 #  ######   ########  #######  ########  ##     ## ########       ###    ##     ## ##     ##  ######
 
 commonScheme = {
-  "color": {
-    "UL16APV":    rt.kOrange+1,
-    "UL16nonAPV": rt.kRed+1,
-    "UL17":       rt.kAzure+2,
-    "UL18":       rt.kGreen-1,
-    "ULRun2":      rt.kBlack,
+  'color': {
+    'UL16APV':    rt.kOrange+1,
+    'UL16nonAPV': rt.kRed+1,
+    'UL17':       rt.kAzure+2,
+    'UL18':       rt.kGreen-1,
+    'Run2':       rt.kBlack,
     },
-  "marker": {
-    "UL16APV":    rt.kFullTriangleUp,
-    "UL16nonAPV": rt.kFullTriangleDown,
-    "UL17":       rt.kFullStar,
-    "UL18":       rt.kFullSquare,
-    "ULRun2":      rt.kFullCircle,
+  'marker': {
+    'UL16APV':    rt.kFullTriangleUp,
+    'UL16nonAPV': rt.kFullTriangleDown,
+    'UL17':       rt.kFullStar,
+    'UL18':       rt.kFullSquare,
+    'Run2':       rt.kFullCircle,
     },
-  "legend": {
-    "UL16APV":    "2016 early",
-    "UL16nonAPV": "2016 late",
-    "UL17":       "2017",
-    "UL18":       "2018",
-    "ULRun2":      "Run2",
+  'legend': {
+    'UL16APV':    '2016 early',
+    'UL16nonAPV': '2016 late',
+    'UL17':       '2017',
+    'UL18':       '2018',
+    'Run2':       'Run 2',
+    'Run3':       'Run 3',
     },
-  "lumi": {
-    "UL16APV":    "20",
-    "UL16nonAPV": "17",
-    "UL17":       "41",
-    "UL18":       "60",
-    "ULRun2":      "138",
+  'lumi': {
+    'UL16APV':    '20',
+    'UL16nonAPV': '17',
+    'UL17':       '41',
+    'UL18':       '60',
+    'Run2':       '138',
+    'Run3':       '8',
     },
-  "lumidec": {
-    "UL16APV":    19.53,
-    "UL16nonAPV": 16.80,
-    "UL17":       41.48,
-    "UL18":       59.83,
-    "ULRun2":      137.65,
+  'lumidec': {
+    'UL16APV':    19.53,
+    'UL16nonAPV': 16.80,
+    'UL17':       41.48,
+    'UL18':       59.83,
+    'Run2':      137.65,
+    },
+  'pileup': {
+    'UL16APV':    22,
+    'UL16nonAPV': 25,
+    'UL17':       33,
+    'UL18':       32,
+    'Run2':       37,
     },
   }
 
-#cms_lumi_TeV = "RunII Legacy, "+commonScheme["lumi"]["RunII"]+" fb^{-1}"
-cms_lumi_TeV = "Run 2 Legacy, 138 fb^{-1}"
+cms_lumi_TeV = 'Run 2 Legacy, 138 fb^{-1}'
 
-cmsText     = "CMS"
-extraText   = "Preliminary"
-extraText2  = "" # For Simulation Preliminary on two lines
+cmsText     = 'CMS'
+extraText   = 'Preliminary'
+extraText2  = '' # For Simulation Preliminary on two lines
 
 writeExtraText = True
 
@@ -79,7 +87,7 @@ relPosX    = 0.045
 relPosY    = 0.035
 relExtraDY = 1.2
 
-# ratio of "CMS" and extra text size
+# ratio of 'CMS' and extra text size
 extraOverCmsTextSize  = 0.76
 
 drawLogo     = False
@@ -107,16 +115,16 @@ def SetAlternative2DColor(h=None):
 
 # Turns the grid lines on (true) or off (false)
 def tdrGrid( gridOn):
-  tdrStyle = gROOT.FindObject("tdrStyle")
+  tdrStyle = gROOT.FindObject('tdrStyle')
   tdrStyle.SetPadGridX(gridOn)
   tdrStyle.SetPadGridY(gridOn)
 
 # Redraws the axis
 def fixOverlay():
-  gPad.RedrawAxis()
+  rt.gPad.RedrawAxis()
 
 def setTDRStyle():
-  tdrStyle =  rt.TStyle("tdrStyle","Style for P-TDR")
+  tdrStyle =  rt.TStyle('tdrStyle','Style for P-TDR')
   #for the canvas:
   tdrStyle.SetCanvasBorderMode(0)
   tdrStyle.SetCanvasColor(rt.kWhite)
@@ -147,7 +155,7 @@ def setTDRStyle():
   tdrStyle.SetMarkerStyle(20)
   #For the fit/function:
   tdrStyle.SetOptFit(1)
-  tdrStyle.SetFitFormat("5.4g")
+  tdrStyle.SetFitFormat('5.4g')
   tdrStyle.SetFuncColor(2)
   tdrStyle.SetFuncStyle(1)
   tdrStyle.SetFuncWidth(1)
@@ -155,12 +163,12 @@ def setTDRStyle():
   tdrStyle.SetOptDate(0)
   #For the statistics box:
   tdrStyle.SetOptFile(0)
-  tdrStyle.SetOptStat(0) # To display the mean and RMS:   SetOptStat("mr")
+  tdrStyle.SetOptStat(0) # To display the mean and RMS:   SetOptStat('mr')
   tdrStyle.SetStatColor(rt.kWhite)
   tdrStyle.SetStatFont(42)
   tdrStyle.SetStatFontSize(0.025)
   tdrStyle.SetStatTextColor(1)
-  tdrStyle.SetStatFormat("6.4g")
+  tdrStyle.SetStatFormat('6.4g')
   tdrStyle.SetStatBorderSize(1)
   tdrStyle.SetStatH(0.1)
   tdrStyle.SetStatW(0.15)
@@ -177,21 +185,21 @@ def setTDRStyle():
   tdrStyle.SetTitleFillColor(10)
   tdrStyle.SetTitleFontSize(0.05)
   # For the axis titles:
-  tdrStyle.SetTitleColor(1, "XYZ")
-  tdrStyle.SetTitleFont(42, "XYZ")
-  tdrStyle.SetTitleSize(0.06, "XYZ")
+  tdrStyle.SetTitleColor(1, 'XYZ')
+  tdrStyle.SetTitleFont(42, 'XYZ')
+  tdrStyle.SetTitleSize(0.06, 'XYZ')
   tdrStyle.SetTitleXOffset(0.9)
   tdrStyle.SetTitleYOffset(1.25)
   # For the axis labels:
-  tdrStyle.SetLabelColor(1, "XYZ")
-  tdrStyle.SetLabelFont(42, "XYZ")
-  tdrStyle.SetLabelOffset(0.007, "XYZ")
-  tdrStyle.SetLabelSize(0.05, "XYZ")
+  tdrStyle.SetLabelColor(1, 'XYZ')
+  tdrStyle.SetLabelFont(42, 'XYZ')
+  tdrStyle.SetLabelOffset(0.007, 'XYZ')
+  tdrStyle.SetLabelSize(0.05, 'XYZ')
   # For the axis:
-  tdrStyle.SetAxisColor(1, "XYZ")
+  tdrStyle.SetAxisColor(1, 'XYZ')
   tdrStyle.SetStripDecimals(True)
-  tdrStyle.SetTickLength(0.03, "XYZ")
-  tdrStyle.SetNdivisions(510, "XYZ")
+  tdrStyle.SetTickLength(0.03, 'XYZ')
+  tdrStyle.SetNdivisions(510, 'XYZ')
   tdrStyle.SetPadTickX(1)  # To get tick marks on the opposite side of the frame
   tdrStyle.SetPadTickY(1)
   # Change for log plots:
@@ -233,11 +241,11 @@ def CMS_lumi(pad, iPosX=11):
   r = pad.GetRightMargin()
   b = pad.GetBottomMargin()
   pad.cd()
-  lumiText = ""
-  if outOfFrame:lumiText += "#scale[0.85]{"
+  lumiText = ''
+  if outOfFrame:lumiText += '#scale[0.85]{'
   lumiText += cms_lumi_TeV
-  lumiText += " (13.6 TeV)"
-  if outOfFrame: lumiText += "}"
+  lumiText += ' (13.6 TeV)'
+  if outOfFrame: lumiText += '}'
 
   latex = rt.TLatex()
   latex.SetNDC()
@@ -270,11 +278,11 @@ def CMS_lumi(pad, iPosX=11):
       yl_0 = posY_ - 0.15
       xl_1 = posX_ + 0.15*H/W
       yl_1 = posY_
-      CMS_logo = rt.TASImage("CMS-BW-label.png")
-      pad_logo =  rt.TPad("logo","logo", xl_0, yl_0, xl_1, yl_1 )
+      CMS_logo = rt.TASImage('CMS-BW-label.png')
+      pad_logo =  rt.TPad('logo','logo', xl_0, yl_0, xl_1, yl_1 )
       pad_logo.Draw()
       pad_logo.cd()
-      CMS_logo.Draw("X")
+      CMS_logo.Draw('X')
       pad_logo.Modified()
       pad.cd()
     else:
@@ -288,10 +296,9 @@ def CMS_lumi(pad, iPosX=11):
             latex.SetTextSize(extraTextSize*t)
             latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraText)
             # For Simulation Preliminary
-            if (extraText2!=""): latex.DrawLatex(posX_, posY_-relExtraDY*cmsTextSize*t - relExtraDY*extraTextSize*t, extraText2)
+            if (extraText2!=''): latex.DrawLatex(posX_, posY_-relExtraDY*cmsTextSize*t - relExtraDY*extraTextSize*t, extraText2)
             if (len(extraText3)!=0):
-              #latex.SetTextSize(extraTextSize*t*3./5)
-              latex.SetTextSize(0.04)
+              latex.SetTextSize(extraTextSize*t*5./5)
               latex.SetTextFont(extraTextFont3)
               for ind,tt in enumerate(extraText3):
                 latex.DrawLatex(posX_, posY_-relExtraDY*cmsTextSize*t - 0.02- (relExtraDY*extraTextSize*t if len(extraText2)!=0 else 0) -(relExtraDY*extraTextSize*t/2 + 0.008)*(ind+1), tt)
@@ -354,10 +361,9 @@ def tdrCanvas(canvName, x_min, x_max, y_min, y_max, nameXaxis, nameYaxis, square
   h.GetXaxis().SetTitle(nameXaxis)
   h.GetYaxis().SetTitle(nameYaxis)
   h.GetXaxis().SetLabelOffset(99)
+  h.Draw('AXIS')
 
-  h.Draw("AXIS")
-
-  # writing the lumi information and the CMS "logo"
+  # writing the lumi information and the CMS 'logo'
   CMS_lumi(canv, iPos)
   canv.Update()
   canv.RedrawAxis()
@@ -365,7 +371,7 @@ def tdrCanvas(canvName, x_min, x_max, y_min, y_max, nameXaxis, nameYaxis, square
   return canv
 
 def GettdrCanvasHist(canv):
-  return canv.GetListOfPrimitives().FindObject("hframe")
+  return canv.GetListOfPrimitives().FindObject('hframe')
 
 def tdrCanvasResetAxes(canv, x_min, x_max, y_min, y_max):
   GettdrCanvasHist(canv).GetXaxis().SetRangeUser(x_min,x_max)
@@ -414,8 +420,8 @@ def tdrDiCanvas(canvName, x_min, x_max, y_min, y_max, y_min2, y_max2, nameXaxis,
   hup = canv.cd(1).DrawFrame(x_min,y_min,x_max,y_max)
   hup.GetYaxis().SetTitleOffset((0.9 if square else 1.1) * Hup / H_ref)
   hup.GetXaxis().SetTitleOffset(0.9)
-  hup.SetTitleSize(hup.GetTitleSize("Y") * H_ref / Hup, "Y")
-  hup.SetLabelSize(hup.GetLabelSize("Y") * H_ref / Hup, "Y")
+  hup.SetTitleSize(hup.GetTitleSize('Y') * H_ref / Hup, 'Y')
+  hup.SetLabelSize(hup.GetLabelSize('Y') * H_ref / Hup, 'Y')
   hup.GetYaxis().SetTitle(nameYaxis)
 
   CMS_lumi(rt.gPad, iPos)
@@ -431,20 +437,20 @@ def tdrDiCanvas(canvName, x_min, x_max, y_min, y_max, y_min2, y_max2, nameXaxis,
   # Scale text sizes and margins to match normal size
   hdw.GetYaxis().SetTitleOffset((0.9 if square else 1.1) * Hdw / H_ref)
   hdw.GetXaxis().SetTitleOffset(0.9)
-  hdw.SetTitleSize(hdw.GetTitleSize("Y") * H_ref / Hdw, "Y")
-  hdw.SetLabelSize(hdw.GetLabelSize("Y") * H_ref / Hdw, "Y")
-  hdw.SetTitleSize(hdw.GetTitleSize("X") * H_ref / Hdw, "X")
-  hdw.SetLabelSize(hdw.GetLabelSize("X") * H_ref / Hdw, "X")
+  hdw.SetTitleSize(hdw.GetTitleSize('Y') * H_ref / Hdw, 'Y')
+  hdw.SetLabelSize(hdw.GetLabelSize('Y') * H_ref / Hdw, 'Y')
+  hdw.SetTitleSize(hdw.GetTitleSize('X') * H_ref / Hdw, 'X')
+  hdw.SetLabelSize(hdw.GetLabelSize('X') * H_ref / Hdw, 'X')
   hdw.GetXaxis().SetTitle(nameXaxis)
   hdw.GetYaxis().SetTitle(nameYaxis2)
 
   # Set tick lengths to match original (these are fractions of axis length)
-  hdw.SetTickLength(hdw.GetTickLength("Y") * H_ref / Hup, "Y") #?? ok if 1/3
-  hdw.SetTickLength(hdw.GetTickLength("X") * H_ref / Hdw, "X")
+  hdw.SetTickLength(hdw.GetTickLength('Y') * H_ref / Hup, 'Y') #?? ok if 1/3
+  hdw.SetTickLength(hdw.GetTickLength('X') * H_ref / Hdw, 'X')
 
   # Reduce divisions to match smaller height (default n=510, optim=kTRUE)
   hdw.GetYaxis().SetNdivisions(505)
-  hdw.Draw("AXIS")
+  hdw.Draw('AXIS')
   canv.cd(0)
   canv.Update()
   canv.RedrawAxis()
@@ -452,7 +458,7 @@ def tdrDiCanvas(canvName, x_min, x_max, y_min, y_max, y_min2, y_max2, nameXaxis,
   return canv
 
 def tdrLeg(x1, y1, x2, y2, textSize=0.045, textFont=42, textColor=rt.kBlack):
-  leg = rt.TLegend(x1, y1, x2, y2, "", "brNDC")
+  leg = rt.TLegend(x1, y1, x2, y2, '', 'brNDC')
   leg.SetFillStyle(rt.kNone)
   leg.SetBorderSize(0)
   leg.SetTextSize(textSize)
@@ -463,13 +469,13 @@ def tdrLeg(x1, y1, x2, y2, textSize=0.045, textFont=42, textColor=rt.kBlack):
 
 #To be fixed as python deletes obj before time
 def tdrHeader(leg, legTitle, textAlign=12, textSize=0.04, textFont=42, textColor=rt.kBlack, isToRemove = True):
-  header = rt.TLegendEntry( 0, legTitle, "h" )
+  header = rt.TLegendEntry( 0, legTitle, 'h' )
   header.SetTextFont(textFont)
   header.SetTextSize(textSize)
   header.SetTextAlign(textAlign)
   header.SetTextColor(textColor)
   if isToRemove:
-    leg.SetHeader(legTitle,"C")
+    leg.SetHeader(legTitle,'C')
     leg.GetListOfPrimitives().Remove(leg.GetListOfPrimitives().At(0))
     leg.GetListOfPrimitives().AddAt(header,0)
   else:
@@ -492,4 +498,15 @@ def tdrDraw(h, opt, marker=rt.kFullCircle, mcolor=rt.kBlack, lstyle=rt.kSolid, l
   h.SetFillStyle(fstyle)
   h.SetFillColor(fcolor)
   if alpha>0: h.SetFillColorAlpha(fcolor, alpha)
-  h.Draw(opt+"SAME")
+  h.Draw(opt+'SAME')
+
+def tdrDrawLine(line, lcolor=rt.kRed, lstyle=rt.kSolid, lwidth=2):
+   line.SetLineStyle(lstyle)
+   line.SetLineColor(lcolor)
+   line.SetLineWidth(lwidth)
+   line.Draw('SAME')
+
+
+
+def ScaleLeg(name, scale = 0.75):
+    return '#scale['+str(scale)+']{'+str(name)+'}'
