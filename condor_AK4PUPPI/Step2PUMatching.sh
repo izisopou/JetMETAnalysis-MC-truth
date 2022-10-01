@@ -22,8 +22,8 @@ else
    hadd -f -k PUFile.root `echo $PUFile | tr ':' ' '`
 fi
 
-cp $WorkDir/Files/L2L3_output/My*.root .
-cp $WorkDir/Files/L2L3_output/*.txt .
+cp $WorkDir/Files/L1_output/My*.root .
+cp $WorkDir/Files/L1_output/*.txt .
 
 echo Current directory content
 ls
