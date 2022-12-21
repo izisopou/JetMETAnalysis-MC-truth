@@ -28,7 +28,7 @@ hadd -k -f Input.root `echo $Files | tr ':' ' '`
 #   -L1FastJet true \
 #   -saveitree false
 
-cp $CMSSW_BASE/src/JetMETAnalysis/JetAnalyzers/config/jra_dr_finebinning.config jra.config
+cp $CMSSW_BASE/src/JetMETAnalysisMCtruth/JetAnalyzers/config/jra_dr_finebinning.config jra.config
 
 jet_response_analyzer_x jra.config \
    -input Input.root \ #JRA_jecl1.root if you want to apply an L1 txt file and have the above lines un-commented out
