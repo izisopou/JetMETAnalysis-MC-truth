@@ -16,12 +16,14 @@ echo Input files are: $File
 
 hadd -k -f Input.root `echo $File | tr ':' ' '`
 
+# -levels 1 2 if you use both L1 and L2L3 txt files
+
 jet_correction_analyzer_x \
    -inputFilename Input.root \
    -outputDir ./ \
    -path $CMSSW_BASE/src/JetMETAnalysisMCtruth/condor_AK4PUPPI/ \
    -era Winter22Run3 \
-   -levels 2 \ # 1 2 if you use both L1 and L2L3 txt files
+   -levels 2 \
    -useweight false \
    -algs ak4puppi \
    -drmax 0.2 \
