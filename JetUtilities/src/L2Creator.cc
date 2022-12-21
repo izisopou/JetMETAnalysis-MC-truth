@@ -300,24 +300,6 @@ void L2Creator::loopOverEtaBins() {
 			eabscor = 0.001*abscor;
 		}
 
-		if(ieta==38){
-		if(eabscor<0.003*abscor){
-			eabscor = 0.003*abscor;
-		}
-		}
-
-		if(ieta==67){
-		if(eabscor<0.005*abscor){
-			eabscor = 0.005*abscor;
-		}
-		}
-
-		if(ieta==68){
-		if(eabscor<0.002*abscor){
-			eabscor = 0.002*abscor;
-		}
-		}
-
 
             }
             if ((abscor>0)  && (absrsp>0) && (eabscor>1e-5) && (eabscor/abscor<0.5) && (eabsrsp>1e-4) && (eabsrsp/absrsp<0.5)) {
