@@ -30,7 +30,9 @@ hadd -k -f Input.root `echo $Files | tr ':' ' '`
 
 cp $CMSSW_BASE/src/JetMETAnalysisMCtruth/JetAnalyzers/config/jra_dr_finebinning.config jra.config
 
-#-input JRA_jecl1.root if you want to apply an L1 txt file and have the above lines un-commented out
+#if you want to apply an L1 txt file and have the above lines un-commented out
+#-input JRA_jecl1.root
+#-algs ak4puppil1
 
 jet_response_analyzer_x jra.config \
    -input Input.root \
