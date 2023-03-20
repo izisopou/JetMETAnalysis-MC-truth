@@ -41,11 +41,9 @@ https://cms.cern.ch/iCMS/user/noteinfo?cmsnoteid=CMS%20AN-2019/230
 
 mkdir MC-truth-JEC/ \
 cd MC-truth-JEC/ \
-tcsh \
 cmsrel CMSSW_12_4_3 \
 cd CMSSW_12_4_3/src \
 cmsenv \
-git-cms-init \
 git clone https://github.com/izisopou/JetMETAnalysisMCtruth.git 
 
 Then compile:
