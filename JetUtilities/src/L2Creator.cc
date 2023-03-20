@@ -1225,7 +1225,7 @@ void L2Creator::setOfflinePFParameters(TGraphErrors* gabscor, TF1* fabscor, doub
     }
     else if(l2pffit.EqualTo("standard+Gaussian",TString::kIgnoreCase)) {
 
-	fabscor->SetParameter(0,0.0221278)
+	fabscor->SetParameter(0,0.0221278);
         fabscor->SetParLimits(0,-2,50);
         fabscor->SetParameter(1,14.265);
         fabscor->SetParLimits(1,0,250);
