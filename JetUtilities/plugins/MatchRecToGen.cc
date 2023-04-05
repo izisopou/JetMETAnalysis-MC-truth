@@ -79,6 +79,7 @@ private:
   unsigned int nRecTot_;
   unsigned int nGenTot_;
   unsigned int nMatchedTot_;
+  //unsigned int countTot_;
 
   // typdefs
   typedef set<unsigned int>                                       IndexSet_t;
@@ -103,6 +104,7 @@ MatchRecToGen::MatchRecToGen(const edm::ParameterSet& iConfig)
   , nRecTot_(0)
   , nGenTot_(0)
   , nMatchedTot_(0)
+  //, countTot_(0)
 {
   produces<CandViewMatchMap>("rec2gen");
   produces<CandViewMatchMap>("gen2rec");
@@ -129,6 +131,33 @@ void MatchRecToGen::produce(edm::Event& iEvent,const edm::EventSetup& iSetup)
   nRec = std::min((size_t)rec_->size(),(size_t)100);
   nGen = std::min((size_t)gen_->size(),(size_t)100);
   
+/*  if(nGen<=30 && nRec<=30 && gen_->at(0).pt()<1000){
+  cout << "event = " << iEvent.id().event() << endl;
+  cout<<"Total "<<nGen<<" gen jets in the event:"<<endl;
+  for(unsigned int i=0; i<nGen; i++)
+  {
+	const reco::Candidate& gen = gen_->at(i);
+	cout<<"Gen jet "<<i+1<<": pT = "<<gen.pt()<<" , eta = "<<gen.eta()<<" , phi = "<<gen.phi()<<endl;
+  }
+
+  cout<<""<<endl;
+  cout<<"*****"<<endl;
+  cout<<""<<endl;
+
+  cout<<"Total "<<nRec<<" reco jets in the event:"<<endl;
+  for(unsigned int i=0; i<nRec; i++)
+  {
+	const reco::Candidate& rec = rec_->at(i);
+	cout<<"Reco jet "<<i+1<<": pT = "<<rec.pt()<<" , eta = "<<rec.eta()<<" , phi = "<<rec.phi()<<endl;
+  }
+  }
+*/
+
+  /*if(nGen>nRec){
+  	cout<<"Found event."<<endl; 
+	countTot_ = countTot_+1;
+  }*/
+
   IndexSet_t iRecSet;
   IndexSet_t iGenSet;
   MatchSet_t matchSet;
@@ -142,6 +171,7 @@ void MatchRecToGen::produce(edm::Event& iEvent,const edm::EventSetup& iSetup)
       const reco::Candidate& gen = gen_->at(iGen);
       double deltaR = reco::deltaR(rec,gen);
       matchSet.insert(make_pair(deltaR,make_pair(iRec,iGen)));
+      //cout << "DR = " << deltaR << " , iRec = " << iRec << " , iGen = " << iGen << endl;
     }
   }
   
@@ -164,12 +194,16 @@ void MatchRecToGen::produce(edm::Event& iEvent,const edm::EventSetup& iSetup)
                           edm::makeRefToBaseProdFrom(rec_->refAt(0), iEvent)));
   }
 
+  //cout << "***" << endl;
+
   MatchIter_t it=matchSet.begin();
   while (it!=matchSet.end()&&iRecSet.size()>0&&iGenSet.size()>0) {
     unsigned int iRec  = it->second.first;
     unsigned int iGen  = it->second.second;
     IndexIter_t  itRec = iRecSet.find(iRec);
     IndexIter_t  itGen = iGenSet.find(iGen);
+   
+    //cout << "iRec = " << iRec << " , iGen = " << iGen << endl;
     
     if (itRec!=iRecSet.end()&&itGen!=iGenSet.end()) {
       nMatched++;
@@ -178,13 +212,15 @@ void MatchRecToGen::produce(edm::Event& iEvent,const edm::EventSetup& iSetup)
       iRecSet.erase(itRec);
       iGenSet.erase(itGen);
     }
-    
+
+    //cout << "nMatched = " << nMatched << endl;    
+
     ++it;
   }
   
   iEvent.put(std::move(recToGenMap),"rec2gen");
   iEvent.put(std::move(genToRecMap),"gen2rec");
-  
+
   nRecTot_ += nRec;
   nGenTot_ += nGen;
   nMatchedTot_ += nMatched;

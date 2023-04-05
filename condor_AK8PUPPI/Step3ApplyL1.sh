@@ -48,7 +48,9 @@ jet_response_analyzer_x jra.config \
    -algs ak8puppi \
    -drmax 0.4 \
    -relrspmin 0.0 \
-   -relrspmax 3.0
+   -relrspmax 3.0 \
+   -doDZcut true \
+   -doNMcut true
 
 cp jra.root ${Output}/JRA_jecl1${ID}.root
 

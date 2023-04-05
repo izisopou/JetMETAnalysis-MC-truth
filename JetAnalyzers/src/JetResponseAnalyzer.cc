@@ -18,6 +18,7 @@
 //______________________________________________________________________________
 JetResponseAnalyzer::JetResponseAnalyzer(const edm::ParameterSet& iConfig)
   : moduleLabel_            (iConfig.getParameter<std::string>            ("@module_label"))
+  , srcRec_                 (consumes<reco::CandidateView>(iConfig.getParameter<edm::InputTag>                ("srcRec")))
   , srcRef_                 (consumes<reco::CandidateView>(iConfig.getParameter<edm::InputTag>                ("srcRef")))
   , srcJetToUncorJetMap_    (consumes<reco::CandViewMatchMap>(iConfig.getParameter<edm::InputTag>("srcJetToUncorJetMap")))
   , srcRefToJetMap_         (consumes<reco::CandViewMatchMap>(iConfig.getParameter<edm::InputTag>     ("srcRefToJetMap")))
@@ -165,7 +166,8 @@ void JetResponseAnalyzer::analyze(const edm::Event& iEvent,
 
   // EVENT DATA HANDLES
   edm::Handle<GenEventInfoProduct>               genInfo;
-  edm::Handle<vector<PileupSummaryInfo> >        puInfos;  
+  edm::Handle<vector<PileupSummaryInfo> >        puInfos; 
+  edm::Handle<reco::CandidateView>               recs; 
   edm::Handle<reco::CandidateView>               refs;
   edm::Handle<reco::CandViewMatchMap>            jetToUncorJetMap;
   edm::Handle<reco::CandViewMatchMap>            refToJetMap;
@@ -230,6 +232,41 @@ void JetResponseAnalyzer::analyze(const edm::Event& iEvent,
   if (iEvent.getByToken(srcgenVtx_,genvtx)) {
   	const auto& genVtxPosition = iEvent.get(srcgenVtx_);
   	JRAEvt_->genpvz = genVtxPosition.z();
+  }
+
+
+  //ALL RECO JETS INFORMATION
+  iEvent.getByToken(srcRec_,recs);
+  for (reco::CandidateView::const_iterator jet = recs->begin(); recs->end() != jet; ++jet) {
+  	JRAEvt_->AllRecoJetsPt->push_back(jet->pt());
+  	JRAEvt_->AllRecoJetsEta->push_back(jet->eta());
+  	JRAEvt_->AllRecoJetsPhi->push_back(jet->phi());
+
+	size_t iRec = static_cast<size_t>(jet - recs->begin());
+        reco::CandidateBaseRef rec=recs->refAt(iRec);
+
+	int chMult=0, nMult=0;
+        getMult( rec.castTo<reco::PFJetRef>()->getJetConstituents(), &nMult, &chMult );
+
+	JRAEvt_->AllRecoJetsNeutralMult->push_back(nMult);
+	JRAEvt_->AllRecoJetsChargedMult->push_back(chMult);
+  }
+
+  //ALL GEN JETS INFORMATION
+  iEvent.getByToken(srcRef_,refs);
+  for (reco::CandidateView::const_iterator gjet = refs->begin(); refs->end() != gjet; ++gjet) {
+  	JRAEvt_->AllGenJetsPt->push_back(gjet->pt());
+  	JRAEvt_->AllGenJetsEta->push_back(gjet->eta());
+  	JRAEvt_->AllGenJetsPhi->push_back(gjet->phi());
+
+	size_t iGen = static_cast<size_t>(gjet - refs->begin());
+        reco::CandidateBaseRef ref=refs->refAt(iGen);
+
+	int chMult=0, nMult=0;
+        getMult( ref.castTo<reco::GenJetRef>()->getJetConstituents(), &nMult, &chMult );
+
+	JRAEvt_->AllGenJetsNeutralMult->push_back(nMult);
+	JRAEvt_->AllGenJetsChargedMult->push_back(chMult);
   }
 
 
@@ -540,6 +577,25 @@ void JetResponseAnalyzer::analyze(const edm::Event& iEvent,
           }
       }
   }
+
+
+  //Flag reco jets with 1 if they are matched with DR<0.2 and with 0 otherwise
+  for(unsigned int irec=0; irec<JRAEvt_->AllRecoJetsPt->size(); irec++)
+  {
+	bool flag = false;
+	for(unsigned int j=0; j<JRAEvt_->refdrjt->size(); j++)
+	{
+		if(JRAEvt_->AllRecoJetsPt->at(irec)==JRAEvt_->jtpt->at(j) && JRAEvt_->AllRecoJetsEta->at(irec)==JRAEvt_->jteta->at(j) && JRAEvt_->AllRecoJetsPhi->at(irec)==JRAEvt_->jtphi->at(j) && JRAEvt_->refdrjt->at(j)<0.2)
+		{
+			flag = true;
+			continue;
+		}
+	}
+
+	JRAEvt_->flag_RecoJetIsMatched->push_back(flag);
+  }
+
+
   tree_->Fill();
   
   return;

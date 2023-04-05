@@ -19,7 +19,6 @@ from JetMETAnalysisMCtruth.JetAnalyzers.TauReconstruction_cff import *
 from JetMETAnalysisMCtruth.JetAnalyzers.JPTReconstruction_cff import *
 from JetMETAnalysisMCtruth.JetAnalyzers.JetCorrection_cff     import *
 from RecoTauTag.RecoTau.tauDecayModes_cfi          import *
-from CommonTools.PileupAlgos.Puppi_cff import *	#main config file (it includes the default PUPPI tune of the CMSSW)
 from JetMETAnalysisMCtruth.JetAnalyzers.customizePuppiTune_cff_V15 import * #customized config (recipe) to apply on top of the main config so as to use the V15 tune
 
 genParticlesForJetsNoNu.src = cms.InputTag("packedGenParticles")
@@ -383,13 +382,21 @@ def addAlgorithm(process, alg_size_type_corr, Defaults, reco, doProducer):
         recJets.jetPtMin = cms.double(0)
         setattr(process, recLabel, recJets)
         sequence = cms.Sequence(recJets * sequence)
+
+        #pTgen cut
+        #(genLabel, genJets) = genJetsDict[alg_size_type]
+        #refPtEta.src = genLabel
+        #genJets.jetPtMin = cms.double(0)
+
         if type == 'PUPPI':
-            process.load('CommonTools.PileupAlgos.Puppi_cff') #main config
+            #process.load('CommonTools.PileupAlgos.Puppi_cff')
             process.load('JetMETAnalysisMCtruth.JetAnalyzers.customizePuppiTune_cff_V15') #apply V15 recipe on top
+
             #puppi.candName = cms.InputTag("particleFlow")
             #applyLowPUCorr must be True for CMSSW>=9_0_X and tune>=v11 (it is by default True inside Puppi_cff)
             #puppiCentral[0].applyLowPUCorr = cms.bool(True)
             #puppiForward[0].applyLowPUCorr = cms.bool(True)
+
             puppi.vertexName = "offlineSlimmedPrimaryVertices"
             
             UpdatePuppiTuneV15(process) 
@@ -512,6 +519,7 @@ def addAlgorithm(process, alg_size_type_corr, Defaults, reco, doProducer):
     jraAnalyzer = 'JetResponseAnalyzer'
     jra = cms.EDAnalyzer(jraAnalyzer,
                          Defaults.JetResponseParameters,
+                         srcRec            = cms.InputTag(jetPtEta.label()),
                          srcRefToJetMap    = cms.InputTag(jetToRef.label(), 'gen2rec'),
                          srcRef            = cms.InputTag(refPtEta.label()),
                          jecLabel          = cms.string(''),

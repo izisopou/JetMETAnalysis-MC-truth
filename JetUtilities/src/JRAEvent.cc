@@ -138,6 +138,17 @@ void JRAEvent::MakeTree(TTree* tree)
       fChain->Branch("pfcand_id", "vector<JRAEvent::Flavor>", &pfcand_id);
    }
    fChain->Branch("recopvz", "vector<Float_t>", &recopvz);
+   fChain->Branch("AllRecoJetsPt", "vector<Float_t>", &AllRecoJetsPt);
+   fChain->Branch("AllRecoJetsEta", "vector<Float_t>", &AllRecoJetsEta);
+   fChain->Branch("AllRecoJetsPhi", "vector<Float_t>", &AllRecoJetsPhi);
+   fChain->Branch("AllRecoJetsNeutralMult", "vector<Int_t>", &AllRecoJetsNeutralMult);
+   fChain->Branch("AllRecoJetsChargedMult", "vector<Int_t>", &AllRecoJetsChargedMult);
+   fChain->Branch("AllGenJetsPt", "vector<Float_t>", &AllGenJetsPt);
+   fChain->Branch("AllGenJetsEta", "vector<Float_t>", &AllGenJetsEta);
+   fChain->Branch("AllGenJetsPhi", "vector<Float_t>", &AllGenJetsPhi);
+   fChain->Branch("AllGenJetsNeutralMult", "vector<Int_t>", &AllGenJetsNeutralMult);
+   fChain->Branch("AllGenJetsChargedMult", "vector<Int_t>", &AllGenJetsChargedMult);
+   fChain->Branch("flag_RecoJetIsMatched", "vector<Bool_t>", &flag_RecoJetIsMatched);
    Notify();
 }
 
@@ -244,6 +255,17 @@ void JRAEvent::Init(TTree *tree)
       fChain->SetBranchAddress("pfcand_id", &pfcand_id, &b_pfcand_id);
    }
    fChain->SetBranchAddress("recopvz", &recopvz, &b_recopvz);
+   fChain->SetBranchAddress("AllRecoJetsPt", &AllRecoJetsPt, &b_AllRecoJetsPt);
+   fChain->SetBranchAddress("AllRecoJetsEta", &AllRecoJetsEta, &b_AllRecoJetsEta);
+   fChain->SetBranchAddress("AllRecoJetsPhi", &AllRecoJetsPhi, &b_AllRecoJetsPhi);
+   fChain->SetBranchAddress("AllRecoJetsNeutralMult", &AllRecoJetsNeutralMult, &b_AllRecoJetsNeutralMult);
+   fChain->SetBranchAddress("AllRecoJetsChargedMult", &AllRecoJetsChargedMult, &b_AllRecoJetsChargedMult);
+   fChain->SetBranchAddress("AllGenJetsPt", &AllGenJetsPt, &b_AllGenJetsPt);
+   fChain->SetBranchAddress("AllGenJetsEta", &AllGenJetsEta, &b_AllGenJetsEta);
+   fChain->SetBranchAddress("AllGenJetsPhi", &AllGenJetsPhi, &b_AllGenJetsPhi);
+   fChain->SetBranchAddress("AllGenJetsNeutralMult", &AllGenJetsNeutralMult, &b_AllGenJetsNeutralMult);
+   fChain->SetBranchAddress("AllGenJetsChargedMult", &AllGenJetsChargedMult, &b_AllGenJetsChargedMult);
+   fChain->SetBranchAddress("flag_RecoJetIsMatched", &flag_RecoJetIsMatched, &b_flag_RecoJetIsMatched);
    Notify();
 }
 
@@ -339,6 +361,17 @@ void JRAEvent::MakeVectors()
       pfcand_id               = new vector<Flavor>;
    }
    recopvz		   = new vector<float>;
+   AllRecoJetsPt           = new vector<float>;
+   AllRecoJetsEta          = new vector<float>;
+   AllRecoJetsPhi          = new vector<float>;
+   AllRecoJetsNeutralMult  = new vector<int>;
+   AllRecoJetsChargedMult  = new vector<int>;
+   AllGenJetsPt            = new vector<float>;
+   AllGenJetsEta           = new vector<float>;
+   AllGenJetsPhi           = new vector<float>;
+   AllGenJetsNeutralMult   = new vector<int>;
+   AllGenJetsChargedMult   = new vector<int>;
+   flag_RecoJetIsMatched   = new vector<bool>;
 }
 
 void JRAEvent::clear()
@@ -406,6 +439,17 @@ void JRAEvent::clear()
       pfcand_id->clear();
    }
    recopvz->clear();
+   AllRecoJetsPt->clear();
+   AllRecoJetsEta->clear();
+   AllRecoJetsPhi->clear();
+   AllRecoJetsNeutralMult->clear();
+   AllRecoJetsChargedMult->clear();
+   AllGenJetsPt->clear();
+   AllGenJetsEta->clear();
+   AllGenJetsPhi->clear();
+   AllGenJetsNeutralMult->clear();
+   AllGenJetsChargedMult->clear();
+   flag_RecoJetIsMatched->clear();
 }
 
 void JRAEvent::Loop()

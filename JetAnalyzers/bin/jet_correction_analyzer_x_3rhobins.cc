@@ -127,7 +127,10 @@ int main(int argc,char**argv)
 
    vector<string>  algs              = cl.getVector<string>      ("algs");
    string          path              = cl.getValue<string>       ("path");
-   string          era               = cl.getValue<string>       ("era");
+   //string          era               = cl.getValue<string>       ("era");
+   string          era_rhoLow        = cl.getValue<string>       ("era_rhoLow");
+   string          era_rhoMiddle     = cl.getValue<string>       ("era_rhoMiddle");
+   string          era_rhoHigh       = cl.getValue<string>       ("era_rhoHigh");
    string          inputFilename     = cl.getValue<string>       ("inputFilename");
    string          inputFilePath     = cl.getValue<string>       ("inputFilePath",        "");
    string          fileList          = cl.getValue<string>       ("fileList",             "");
@@ -344,8 +347,8 @@ int main(int argc,char**argv)
       TH2D *EtaVsPt(nullptr);
       TH1F *RefEtaDistribution(nullptr);
       TH1F *EtaDistribution(nullptr);
-      TH1F *EtaUncorrPtgt30(nullptr);
-      TH1F *EtaCorrPtgt30(nullptr);
+      //TH1F *EtaUncorrPtgt30(nullptr);
+      //TH1F *EtaCorrPtgt30(nullptr);
       TH1F *iEtaDistribution(nullptr);
       TH1F *EtaDistributionPU0(nullptr);
       TH1F *EtaDistributionPU[10];
@@ -391,28 +394,55 @@ int main(int argc,char**argv)
       }
       cout<<"jet algorithm: "<<algs[a]<<endl;
       cout<<"correction level: "<<JetInfo::get_correction_levels(levels,L1FastJet)<<endl;
-      cout<<"correction tag: "<<JetInfo::get_correction_tags(era,algs[a],levels,path,L1FastJet)<<endl;
+      cout<<"correction tag: "<<JetInfo::get_correction_tags(era_rhoLow,algs[a],levels,path,L1FastJet)<<endl;
+      cout<<"correction tag: "<<JetInfo::get_correction_tags(era_rhoMiddle,algs[a],levels,path,L1FastJet)<<endl;
+      cout<<"correction tag: "<<JetInfo::get_correction_tags(era_rhoHigh,algs[a],levels,path,L1FastJet)<<endl;
 
       cout << "Setting up the FactorizedJetCorrector ... " << flush;
-      FactorizedJetCorrector *JetCorrector;
+      //FactorizedJetCorrector *JetCorrector;
+      FactorizedJetCorrector *JetCorrector_rhoLow;
+      FactorizedJetCorrector *JetCorrector_rhoMiddle;
+      FactorizedJetCorrector *JetCorrector_rhoHigh;
       if(levels.size()>0 && useTags) {
-         JetCorrector = new FactorizedJetCorrector(JetInfo::get_correction_levels(levels,L1FastJet),
-                                                   JetInfo::get_correction_tags(era,algs[a],levels,path,L1FastJet));
+         //JetCorrector = new FactorizedJetCorrector(JetInfo::get_correction_levels(levels,L1FastJet),
+         //                                          JetInfo::get_correction_tags(era,algs[a],levels,path,L1FastJet));
+         JetCorrector_rhoLow = new FactorizedJetCorrector(JetInfo::get_correction_levels(levels,L1FastJet),
+                                                   JetInfo::get_correction_tags(era_rhoLow,algs[a],levels,path,L1FastJet));
+         JetCorrector_rhoMiddle = new FactorizedJetCorrector(JetInfo::get_correction_levels(levels,L1FastJet),
+                                                   JetInfo::get_correction_tags(era_rhoMiddle,algs[a],levels,path,L1FastJet));
+         JetCorrector_rhoHigh = new FactorizedJetCorrector(JetInfo::get_correction_levels(levels,L1FastJet),
+                                                   JetInfo::get_correction_tags(era_rhoHigh,algs[a],levels,path,L1FastJet));
       }
       else if(levels.size()>0) {
          //
          // Make sure the levels are in the correct order (lowest level to highest)
          //
          sort (levels.begin(),levels.end());
-         vector<JetCorrectorParameters> vPar;
+         vector<JetCorrectorParameters> vPar_rhoLow;
          for(unsigned int ilevel=0; ilevel<levels.size(); ilevel++) {
-            vPar.push_back(JetCorrectorParameters(string(path + era + JetInfo::get_level_tag(levels[ilevel],L1FastJet) + 
+            vPar_rhoLow.push_back(JetCorrectorParameters(string(path + era_rhoLow + JetInfo::get_level_tag(levels[ilevel],L1FastJet) + 
                                                          jetInfo.getAlias() + getPostfix(postfix,algs[a],levels[ilevel]) + ".txt")));
          }
-         JetCorrector = new FactorizedJetCorrector(vPar);
+         JetCorrector_rhoLow = new FactorizedJetCorrector(vPar_rhoLow);
+
+         vector<JetCorrectorParameters> vPar_rhoMiddle;
+         for(unsigned int ilevel=0; ilevel<levels.size(); ilevel++) {
+            vPar_rhoMiddle.push_back(JetCorrectorParameters(string(path + era_rhoMiddle + JetInfo::get_level_tag(levels[ilevel],L1FastJet) + 
+                                                         jetInfo.getAlias() + getPostfix(postfix,algs[a],levels[ilevel]) + ".txt")));
+         }
+         JetCorrector_rhoMiddle = new FactorizedJetCorrector(vPar_rhoMiddle);
+
+         vector<JetCorrectorParameters> vPar_rhoHigh;
+         for(unsigned int ilevel=0; ilevel<levels.size(); ilevel++) {
+            vPar_rhoHigh.push_back(JetCorrectorParameters(string(path + era_rhoHigh + JetInfo::get_level_tag(levels[ilevel],L1FastJet) + 
+                                                         jetInfo.getAlias() + getPostfix(postfix,algs[a],levels[ilevel]) + ".txt")));
+         }
+         JetCorrector_rhoHigh = new FactorizedJetCorrector(vPar_rhoHigh);
       }
       else {
-         JetCorrector = nullptr;
+         JetCorrector_rhoLow = nullptr;
+         JetCorrector_rhoMiddle = nullptr;
+         JetCorrector_rhoHigh = nullptr;
       }
       cout << "DONE" << endl;
 
@@ -434,11 +464,11 @@ int main(int argc,char**argv)
       ScaleVsEtaVsPt = new TH3F("ScaleVsEtaVsPt","ScaleVsEtaVsPt",NPtBins,vpt,NETA,veta,nbinsrelrsp,vcorr);
       ScaleVsEtaVsPt->Sumw2();  
 
-      EtaUncorrPtgt30 = new TH1F("EtaUncorrPtgt30","EtaUncorrPtgt30",200,-5,5);
+      /*EtaUncorrPtgt30 = new TH1F("EtaUncorrPtgt30","EtaUncorrPtgt30",200,-5,5);
       EtaUncorrPtgt30->Sumw2();
       EtaCorrPtgt30 = new TH1F("EtaCorrPtgt30","EtaCorrPtgt30",200,-5,5);
       EtaCorrPtgt30->Sumw2();
-
+      */
 
       if(!reduceHistograms) {
          RespVsPtProfile = new TProfile("RespVsPtProfile","RespVsPtProfile",NPtBins,vpt);
@@ -575,6 +605,12 @@ int main(int argc,char**argv)
          }//for(int i=0; i<3; i++)
          TPUDistribution = new TH1F("TPUDistribution","TPUDistribution",1000,0,100);
       }
+
+      //TH1D *h_rho = new TH1D("h_rho","",100,0,100);
+      //TH1D *h_rho_weighted = new TH1D("h_rho_weighted","",100,0,100);
+      //h_rho->Sumw2();
+      //h_rho_weighted->Sumw2();
+
       //
       // fill histograms
       //
@@ -595,7 +631,6 @@ int main(int argc,char**argv)
          double sumpt = JRAEvt->sumpt_lowpt->at(0);
          float pthat = JRAEvt->pthat;
          float evt_fill = true;
-
 
          if (printnpu) cout<<" ievt = "<<ievt<<"\tnpu = "<<npu<<endl;
          if (npu<min_npu) min_npu = npu;
@@ -620,6 +655,11 @@ int main(int argc,char**argv)
             npvVsRhoHLT->Fill(JRAEvt->rho_hlt,JRAEvt->npv);
          }
 
+	 //int count=0;
+
+	 //if(JRAEvt->rho > 22) continue;
+	 //if(JRAEvt->rho <= 22 || JRAEvt->rho > 30) continue;
+	 //if(JRAEvt->rho <= 30) continue;
 
  	 //Apply |DZ|<0.2 cm cut 
 	 if(doDZcut){
@@ -630,19 +670,13 @@ int main(int argc,char**argv)
          if(nrefmax>0 && JRAEvt->nref>nrefmax) JRAEvt->nref = nrefmax;
          for (unsigned char iref=0;iref<JRAEvt->nref;iref++) {
 
-         //=== veto region for UL2017 =======
-        //f((JRAEvt->jtphi->at(iref)<-0.5236 && JRAEvt->jtphi->at(iref)>-0.8727 && JRAEvt->jteta->at(iref) >1.31 && JRAEvt->jteta->at(iref)<2.96) || (JRAEvt->jtphi->at(iref)>2.705 && JRAEvt->jtphi->at(iref)<3.1416 && JRAEvt->jteta->at(iref) >0 && JRAEvt->jteta->at(iref)<1.4835) )continue;
-        //=== veto region for UL2018 =======
-       //if((JRAEvt->jtphi->at(iref)<-0.8727 && JRAEvt->jtphi->at(iref)>-1.5708 && JRAEvt->jteta->at(iref) < -1.31 && JRAEvt->jteta->at(iref)> -2.96) || (JRAEvt->jtphi->at(iref)>0.4363 && JRAEvt->jtphi->at(iref)<0.7854 && JRAEvt->jteta->at(iref) >0 && JRAEvt->jteta->at(iref)<1.31) )continue;
-
-
+	  
 	    //Apply Neutral Multiplicity cut for |eta|>3 to remove the double peak
 	    if(doNMcut){
 	  	  if(fabs(JRAEvt->jteta->at(iref))>3.){
 			  if(!(JRAEvt->jtnMult->at(iref)>1)) continue;
 	  	  }
 	    }
-
 
 //	    if(JRAEvt->npv>0 && JRAEvt->npv<10){  //nVtx cut starts here
             float rho = JRAEvt->rho;
@@ -660,7 +694,8 @@ int main(int argc,char**argv)
             }
             float dr     = JRAEvt->refdrjt->at(iref);
             if (drmax.size()>0 && dr > drmax[a]) continue;
-            if(JetCorrector) {
+
+            /*if(JetCorrector) {
                JetCorrector->setJetPt(pt);
                JetCorrector->setJetEta(eta);
                if (TString(JetInfo::get_correction_levels(levels,L1FastJet)).Contains("L1FastJet")) {
@@ -681,6 +716,87 @@ int main(int argc,char**argv)
                if(!L1FastJet) JetCorrector->setNPV(JRAEvt->npv);
             }
             float scale = (JetCorrector) ? JetCorrector->getCorrection() : 1.0;
+	    */
+
+	    float scale=1.;
+
+	    //if(JRAEvt->rho > 30) cout << "rho = " << JRAEvt->rho << endl;
+
+	    if(JetCorrector_rhoLow && JetCorrector_rhoMiddle && JetCorrector_rhoHigh){
+	    if(JRAEvt->rho <=22)
+	    {
+               JetCorrector_rhoLow->setJetPt(pt);
+               JetCorrector_rhoLow->setJetEta(eta);
+               if (TString(JetInfo::get_correction_levels(levels,L1FastJet)).Contains("L1FastJet")) {
+                  if (JRAEvt->jtarea->at(iref)!=0)
+                     JetCorrector_rhoLow->setJetA(JRAEvt->jtarea->at(iref));
+                  else if (jetInfo.coneSize>0)
+                     JetCorrector_rhoLow->setJetA(TMath::Pi()*TMath::Power(jetInfo.coneSize/10.0,2));
+                  else {
+                     cout << "WARNING::Unknown jet area. Skipping event." << endl;
+                     continue;
+                  }
+
+                  if (jetInfo.isHLT())
+                     JetCorrector_rhoLow->setRho(JRAEvt->rho_hlt);
+                  else
+                     JetCorrector_rhoLow->setRho(JRAEvt->rho);
+               }
+               if(!L1FastJet) JetCorrector_rhoLow->setNPV(JRAEvt->npv);
+            
+               scale = JetCorrector_rhoLow->getCorrection();
+	       //cout << "Pt, = " << pt << " , eta = " << eta << ", Scale = " << scale << endl;
+
+	    }
+	    else if(JRAEvt->rho > 22 && JRAEvt->rho <= 30)
+	    {
+               JetCorrector_rhoMiddle->setJetPt(pt);
+               JetCorrector_rhoMiddle->setJetEta(eta);
+               if (TString(JetInfo::get_correction_levels(levels,L1FastJet)).Contains("L1FastJet")) {
+                  if (JRAEvt->jtarea->at(iref)!=0)
+                     JetCorrector_rhoMiddle->setJetA(JRAEvt->jtarea->at(iref));
+                  else if (jetInfo.coneSize>0)
+                     JetCorrector_rhoMiddle->setJetA(TMath::Pi()*TMath::Power(jetInfo.coneSize/10.0,2));
+                  else {
+                     cout << "WARNING::Unknown jet area. Skipping event." << endl;
+                     continue;
+                  }
+
+                  if (jetInfo.isHLT())
+                     JetCorrector_rhoMiddle->setRho(JRAEvt->rho_hlt);
+                  else
+                     JetCorrector_rhoMiddle->setRho(JRAEvt->rho);
+               }
+               if(!L1FastJet) JetCorrector_rhoMiddle->setNPV(JRAEvt->npv);
+            
+               scale = JetCorrector_rhoMiddle->getCorrection();
+	       //cout << "Pt, = " << pt << " , eta = " << eta << ", Scale = " << scale << endl;
+	    }
+	    else
+	    {
+               JetCorrector_rhoHigh->setJetPt(pt);
+               JetCorrector_rhoHigh->setJetEta(eta);
+               if (TString(JetInfo::get_correction_levels(levels,L1FastJet)).Contains("L1FastJet")) {
+                  if (JRAEvt->jtarea->at(iref)!=0)
+                     JetCorrector_rhoHigh->setJetA(JRAEvt->jtarea->at(iref));
+                  else if (jetInfo.coneSize>0)
+                     JetCorrector_rhoHigh->setJetA(TMath::Pi()*TMath::Power(jetInfo.coneSize/10.0,2));
+                  else {
+                     cout << "WARNING::Unknown jet area. Skipping event." << endl;
+                     continue;
+                  }
+
+                  if (jetInfo.isHLT())
+                     JetCorrector_rhoHigh->setRho(JRAEvt->rho_hlt);
+                  else
+                     JetCorrector_rhoHigh->setRho(JRAEvt->rho);
+               }
+               if(!L1FastJet) JetCorrector_rhoHigh->setNPV(JRAEvt->npv);
+            
+               scale = JetCorrector_rhoHigh->getCorrection();
+	       //cout << "Pt, = " << pt << " , eta = " << eta << ", Scale = " << scale << endl;
+	    }
+	    }
 
             //
             // we have to fill this histogram before we kill the event
@@ -702,6 +818,13 @@ int main(int argc,char**argv)
                weight *= LumiWeight;
             }
             if(pThatReweight!=-9999) weight*=pow(pthat/15.,pThatReweight);
+
+	    //count++;
+
+	    //if(count==1){
+	    	//h_rho->Fill(JRAEvt->rho);
+            	//h_rho_weighted->Fill(JRAEvt->rho,weight);
+  	    //}
 
 	    //Cut after L1
 	    /*JetCorrector->setJetPt(pt);
@@ -747,8 +870,8 @@ int main(int argc,char**argv)
             //}
             RespVsEtaVsPt->Fill(ptgen,eta,relrsp,weight);
 
-	    if(JRAEvt->jtpt->at(iref)>=30) EtaUncorrPtgt30->Fill(eta,weight);
-	    if( (scale*JRAEvt->jtpt->at(iref))>=30 ) EtaCorrPtgt30->Fill(eta,weight);
+	    //if(JRAEvt->jtpt->at(iref)>=30) EtaUncorrPtgt30->Fill(eta,weight);
+	    //if( (scale*JRAEvt->jtpt->at(iref))>=30 ) EtaCorrPtgt30->Fill(eta,weight);
 
             if(!reduceHistograms) {
                if(HigherDist->FindBin(scale*pt) < HigherDist->FindBin(ptgen)) HigherDist->Fill(scale*pt,weight);
@@ -965,6 +1088,8 @@ int main(int argc,char**argv)
    outf->Write();
    cout << "DONE" << endl;
    outf->Close();
+
+   //textfile.close();
 
    m_benchmark->Stop("event"); 
    cout << "jet_correction_analyzer_x" << endl << "\tCPU time = " << m_benchmark->GetCpuTime("event") << " s" << endl

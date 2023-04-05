@@ -114,6 +114,17 @@ public :
    vector<Float_t>* pfcand_e;
    vector<Flavor>*  pfcand_id;
    vector<Float_t>* recopvz;
+   vector<Float_t>* AllRecoJetsPt;
+   vector<Float_t>* AllRecoJetsEta;
+   vector<Float_t>* AllRecoJetsPhi;
+   vector<Int_t>* AllRecoJetsNeutralMult;
+   vector<Int_t>* AllRecoJetsChargedMult;
+   vector<Float_t>* AllGenJetsPt;
+   vector<Float_t>* AllGenJetsEta;
+   vector<Float_t>* AllGenJetsPhi;
+   vector<Int_t>* AllGenJetsNeutralMult;
+   vector<Int_t>* AllGenJetsChargedMult;
+   vector<Bool_t>*  flag_RecoJetIsMatched;
 
    // List of branches
    TBranch        *b_npus;   //!
@@ -180,6 +191,17 @@ public :
    TBranch        *b_pfcand_id;   //!
    TBranch        *b_refdzvtx;   //!
    TBranch	  *b_recopvz;	//!
+   TBranch        *b_AllRecoJetsPt;   //!
+   TBranch        *b_AllRecoJetsEta;   //!
+   TBranch        *b_AllRecoJetsPhi;   //!
+   TBranch        *b_AllRecoJetsNeutralMult;   //!
+   TBranch        *b_AllRecoJetsChargedMult;   //!
+   TBranch        *b_AllGenJetsPt;   //!
+   TBranch        *b_AllGenJetsEta;   //!
+   TBranch        *b_AllGenJetsPhi;   //!
+   TBranch        *b_AllGenJetsNeutralMult;   //!
+   TBranch        *b_AllGenJetsChargedMult;   //!
+   TBranch	  *b_flag_RecoJetIsMatched;	//!
 
    JRAEvent(TTree *tree = 0, bitset<8> b = 0);
    virtual ~JRAEvent();

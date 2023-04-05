@@ -115,6 +115,7 @@ private:
   // member data
   std::string   moduleLabel_;
   
+  edm::EDGetTokenT<reco::CandidateView> srcRec_;
   edm::EDGetTokenT<reco::CandidateView> srcRef_;
   edm::EDGetTokenT<reco::CandViewMatchMap> srcJetToUncorJetMap_;
   edm::EDGetTokenT<reco::CandViewMatchMap> srcRefToJetMap_;
