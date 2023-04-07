@@ -21,7 +21,7 @@
 <a name="changes"></a>
 ## Changes from CMSSW_12_6_X to CMSSW_13_0_X
 
-1) Change to edm\:\:one\:\:EDAnalyzer<> and edm\:\:one\:\:EDProducer<> from edm::EDAnalyzer and edm::EDProducer respectively. Modify the includes as well.
+1) Change to `edm::one::EDAnalyzer<>` and `edm::one::EDProducer<>` from edm::EDAnalyzer and edm::EDProducer respectively. Modify the includes as well.
 
 2) Copy the file /cvmfs/cms.cern.ch/slc7_amd64_gcc11/external/gcc/11.2.1-f9b9dfdd886f71cd63f5538223d8f161/include/c++/11.2.1/bits/stl_tree.h to the JetMETAnalysisMCtruth/JetUtilities/interface directory and comment out lines 768-771
 
