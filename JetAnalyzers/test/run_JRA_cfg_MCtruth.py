@@ -48,7 +48,7 @@ for k, v in algsizetype.items():
 #! CONDITIONS (DELIVERING JEC BY DEFAULT!)
 #!
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = cms.string('122X_mcRun3_2021_realistic_v9') 
+process.GlobalTag.globaltag = cms.string('130X_dataRun3_Prompt_Candidate_2023_03_24_14_11_23') 
 
 if conditionsSource != "GT":
     if conditionsSource == "DB":
@@ -66,7 +66,7 @@ if conditionsSource != "GT":
 #!
 #! INPUT
 #!
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
 
 ##############################################
 # External Input File (most likely from DAS) #
@@ -76,7 +76,7 @@ try:
 except ImportError:
     print ("Couldn't open the external list of files from DAS. If you just checkout out the JetResponseAnalyzer package you will need to make this file yourself. Currently Falling back to opening the list hard-coded in run_JRA_cfg.py. This is not a bad action as long as it is what you intended to have happen.")
     inputFiles = cms.untracked.vstring(
-		'root://cms-xrd-global.cern.ch//store/mc/Run3Winter22MiniAOD/QCD_Pt-15to7000_TuneCP5_Flat2018_13p6TeV_pythia8/MINIAODSIM/122X_mcRun3_2021_realistic_v9-v2/2430000/004af1ea-531a-40ad-8859-bb0493b5c2fa.root'
+		'root://cms-xrd-global.cern.ch//store/mc/Run3Winter23MiniAOD/QCD_PT-15to7000_TuneCP5_13p6TeV_pythia8/MINIAODSIM/126X_mcRun3_2023_forPU65_v1-v2/2540000/035c0c4f-85be-40f5-8955-fa99478c9a8e.root'
 	    )
     process.source = cms.Source("PoolSource", fileNames = inputFiles )
 
