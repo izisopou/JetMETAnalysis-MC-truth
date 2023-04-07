@@ -2,6 +2,7 @@
 
 <!-- MarkdownTOC depth=0 -->
 
+- [Changes from CMSSW_12_6_X to CMSSW_13_0_X](#changes)
 - [Overview](#overview)
 - [Documentation](#documentation)
 - [Setup CMSSW release](#setup-cmssw)
@@ -15,6 +16,21 @@
 - [Instructions on how to plot the correction factors](#Corr-Factors)
 
 <!-- /MarkdownTOC -->
+
+
+<a name="changes"></a>
+## Changes from CMSSW_12_6_X to CMSSW_13_0_X
+
+1) Change to edm::one::EDAnalyzer<> and edm::one::EDProducer<> from edm::EDAnalyzer and edm::EDProducer respectively. Modify the includes as well.
+
+2) Copy the file /cvmfs/cms.cern.ch/slc7_amd64_gcc11/external/gcc/11.2.1-f9b9dfdd886f71cd63f5538223d8f161/include/c++/11.2.1/bits/stl_tree.h to the JetMETAnalysisMCtruth/JetUtilities/interface directory and comment out lines 768-771
+
+3) In JetUtilities/src/JetInfo.cc line 361 change assert(words>0) to assert(words != nullptr)
+
+4) From CMSSW_12_6_X copy the codes JetMETCorrections/Objects/interface/JetCorrector.h and  cmssw/JetMETCorrections/Objects/src/JetCorrector.cc and paste them to JetUtilities/interface/ and JetUtilities/src/ respectively. In JetCorrector.cc comment out lines 48-53, and in JetAnalyzers/src/JetResponseAnalyzer.cc, JetAnalyzers/src/JetResponseAnalyzerProducer.cc write jetCorrector_ =  0
+
+5) From CMSSW_12_6_X copy the codes JetMETCorrections/Configuration/python/JetCorrectionServicesAllAlgos_cff.py and JetMETCorrections/Configuration/python/JetCorrectionServices_cff.py and paste them inside JetAnalyzers/python/
+
 
 <a name="overview"></a>
 ## Overview
