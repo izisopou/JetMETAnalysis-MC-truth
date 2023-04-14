@@ -1,19 +1,3 @@
-*** The main instructions for running ntuples with Run2 samples are provided in https://github.com/izisopou/MC-truth-JEC/blob/main/README.md 
-Here, we provide a workaround for running the ntuples with Run3 samples which require the CMSSW_12_2_X release ***
-
-
-mkdir JEC_Run3samples/
-cd JEC_Run3samples/
-tcsh 
-cmsrel CMSSW_12_2_1
-cd CMSSW_12_2_1/src/
-cmsenv
-git-cms-init 
-git clone https://github.com/izisopou/MC-truth-JEC.git
-mv -f MC-truth-JEC/* .
-rm -rf MC-truth-JEC
-scram b -j 4
-
 To fix the compilation errors:
 
 ------------
@@ -69,23 +53,3 @@ Go to JEC_Run3MCsamples/CMSSW_12_2_1/src/JetMETAnalysis/JetAnalyzers/test and ru
 cmsenv
 voms-proxy-init -voms cms
 cmsRun run_JRA_cfg_MCtruth.py
-
-The code will work and produce the ntuple root file. There will also be the following message:
-
-%MSG-s LegacyModules:  AfterModConstruction 05-Apr-2022 14:10:35 CEST pre-events
-The following legacy modules are configured. Support for legacy modules
-is going to end soon. These modules need to be converted to have type
-edm::global, edm::stream, edm::one, or in rare cases edm::limited.
-  MatchRecToGen ak4puppiJetToRef
-  MatchRecToGen ak4puppiJetToUncorJet
-  MatchRecToGen ak4pfchsJetToRef
-  MatchRecToGen ak4pfchsJetToUncorJet
-  MatchRecToGen ak8puppiJetToRef
-  MatchRecToGen ak8puppiJetToUncorJet
-  MatchRecToGen ak8pfchsJetToRef
-  MatchRecToGen ak8pfchsJetToUncorJet
-
-(If the cmsRun test does not work and you receive errors still, then do "scram b clean" before doing "scram b -j 4", repeat the step with opening the JEC_Run3MCsamples/CMSSW_12_2_1/tmp/slc7_amd64_gcc900/src/JetMETAnalysis/JetUtilities/src/JetMETAnalysisJetUtilities/a/JetMETAnalysisJetUtilities_xr.cc code and adding *before any other include* the following:
-#include "JetMETAnalysis/JetUtilities/interface/stl_tree.h" 
-because "scram b clean" will overwrite this, and try again)
-
