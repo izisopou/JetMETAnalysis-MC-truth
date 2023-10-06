@@ -33,7 +33,10 @@ jet_correction_analyzer_x \
    -relrspmax 3.0 \
    -MCPUReWeighting MyMCPUHisto_Winter22Run3_Flat2018_PremixedPU.root \
    -DataPUReWeighting MyDataPUHisto_2022.root \
-   -nrefmax 3
+   -nrefmax 3 \
+   -doDZcut true \
+   -doNMcut true \
+   -doVetoMap false
 
 cp Closure_ak4puppi.root ${Output}/Closure_ak4puppi${ID}.root
 
