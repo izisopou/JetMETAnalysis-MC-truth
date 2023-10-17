@@ -196,7 +196,7 @@ int main(int argc,char**argv)
   TString        DataPUHistoName   = cl.getValue<TString>("DataPUHistoName","pileup_jt400");
   bool           doDZcut           = cl.getValue<bool>   ("doDZcut",                 false);
   bool           doNMcut           = cl.getValue<bool>   ("doNMcut",                 false);
-  bool           doVetoMap_EE      = cl.getValue<bool>   ("doVetoMap_EE",            false);
+  bool           doVetoMap         = cl.getValue<bool>   ("doVetoMap",               false);
   bool           verbose           = cl.getValue<bool>   ("verbose",                 false);
 
   if (!cl.check()) return 0;
@@ -1497,7 +1497,7 @@ int main(int argc,char**argv)
         for (unsigned char iref=0;iref<JRAEvt->nref;iref++) {
 	        
 
-	  if(doVetoMap_EE){
+	  if(doVetoMap){
 		bool flag_IsInVetoRegion = false;
 
 		for(int ibin=1; ibin<=h_veto->GetNbinsX(); ibin++){
