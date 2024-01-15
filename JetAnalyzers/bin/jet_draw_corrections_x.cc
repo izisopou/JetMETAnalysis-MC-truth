@@ -313,28 +313,28 @@ TCanvas * getCorrectionVsEtaCanvas(TString algo, FactorizedJetCorrector * jetCor
 *///PtVals.push_back(5);
   //PtVals.push_back(10);
   //PtVals.push_back(15);
-  PtVals.push_back(20);
-  PtVals.push_back(30);
+  PtVals.push_back(10);
+  PtVals.push_back(15);
   //PtVals.push_back(40);
-  PtVals.push_back(50);
+  PtVals.push_back(20);
   //PtVals.push_back(60);
   //PtVals.push_back(70);
   //PtVals.push_back(75);
-  PtVals.push_back(100);
+  PtVals.push_back(30);
   //PtVals.push_back(150);
-  PtVals.push_back(200);
+  PtVals.push_back(50);
+  PtVals.push_back(100);
+  PtVals.push_back(300);
   PtVals.push_back(500);
-  PtVals.push_back(750);
-  PtVals.push_back(1000);
   //PtVals.push_back(1500);
-  PtVals.push_back(2000);
-  //PtVals.push_back(4000);
+  PtVals.push_back(1000);
+  PtVals.push_back(3000);
 
   //Create the canvas with multiple pads
   TString ss("CorrectionVsEta_Overview");
   ss += suffix;
   TCanvas *ove = new TCanvas(ss,ss,1200,800);
-  ove->Divide(3,3);
+  ove->Divide(4,4);
 
   // loop over all pads
   for (int c = 0; c < ove->GetListOfPrimitives()->GetSize(); c++) {
@@ -1346,14 +1346,15 @@ TCanvas * getCorrectionMap(TString algo, FactorizedJetCorrector * jetCorr,
 //---------------------------------------------------------------------
 TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString suffix, bool doATLAS) {
     _jec = jetCorr;
-    TF1 *_jecpt = new TF1("jecpt",fJECPt,0,6500,3);
+    TF1 *_jecpt = new TF1("jecpt",fJECPt,0,6800,3);
 
   // doATLAS:
   // If true, these values represent energies
   // If false, these values represent pt
-  double vars[] = {15, 30, 90, 300, 1000, 3000};
+  double vars[] = {15, 30, 100, 300, 1000, 3000};
+  //double vars[] = {30, 50, 100, 300, 1000, 3000};
   const int nvar = sizeof(vars)/sizeof(vars[0]);
-  const int neta = 48;//52;
+  const int neta = 52;//52;
   const int jeta = TMath::Pi()*0.5*0.5;
   const int mu = 0;
 
@@ -1365,18 +1366,19 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
     TGraph *g = new TGraph(0); gs[ivar] = g;
     for (int ieta = 0; ieta != neta; ++ieta) {
       
-      if(ieta==26 || ieta==28 || ieta==31 || ieta==33 || ieta==35 || ieta==37 || ieta==39 || ieta==41 || ieta==43 || ieta==45 || ieta==47 || ieta==48) continue;
+      //if(ieta==26 || ieta==28 || ieta==31 || ieta==33 || ieta==35 || ieta==37 || ieta==39 || ieta==41 || ieta==43 || ieta==45 || ieta==47 || ieta==48) continue;
       double eta = (ieta+0.5)*0.1;
       double dependent_variable;
       if(doATLAS) dependent_variable = independent_variable / cosh(eta);
       else dependent_variable = independent_variable * cosh(eta);
       if ((doATLAS && dependent_variable > 10. && independent_variable < 4000.) ||
-          (independent_variable > 10. && dependent_variable < 6500.)) {
+          (independent_variable > 10. && dependent_variable < 6800.)) {
         double jes;
         if(doATLAS) jes = getResp(_jecpt, dependent_variable, eta, jeta, mu);
         else jes = getResp(_jecpt, independent_variable, eta, jeta, mu);
         int n = g->GetN();
         g->SetPoint(n, eta, jes);
+        //cout << "ieta = " << eta << " , jes = " << jes << endl;
       }
     } // for ie
   } // for ieta
@@ -1386,9 +1388,9 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   //TCanvas *c1 = new TCanvas("c1","c1",800,600); // ATLAS shape
   TH1D *h;
   if(doATLAS) h = new TH1D("h",";Jet |#eta|;Jet response at PF scale",40,0,4.9);
-  else h = new TH1D("h",";|#eta^{jet}|;Simulated jet response",40,0,4.9);
-  h->SetMaximum(1.2);
-  h->SetMinimum(0.32);
+  else h = new TH1D("h",";|#eta^{jet}|;Simulated jet response",52,0,5.2);
+  h->SetMaximum(1.3);
+  h->SetMinimum(0.01); //0.32
   //h->Draw("AXIS");
   TString ss;
   if(doATLAS) ss+="ATLASresponse";
@@ -1396,16 +1398,22 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   ss += suffix;
   TCanvas *c1 = tdrCanvas(ss.Data(),h,14,0,doATLAS ? kRectangular : kSquare);
 
-  TLegend *leg1 = tdrLeg(0.25,0.27,0.55,0.32);
-  TLegend *leg2 = tdrLeg(0.25,0.22,0.55,0.27);
-  TLegend *leg3 = tdrLeg(0.25,0.17,0.55,0.22);
-  TLegend *leg4 = tdrLeg(0.55,0.27,0.85,0.32);
-  TLegend *leg5 = tdrLeg(0.55,0.22,0.85,0.27);
-  TLegend *leg6 = tdrLeg(0.55,0.17,0.85,0.22);
+  //TLegend *leg1 = tdrLeg(0.25,0.27,0.55,0.32);
+  //TLegend *leg2 = tdrLeg(0.25,0.22,0.55,0.27);
+  //TLegend *leg3 = tdrLeg(0.25,0.17,0.55,0.22);
+  //TLegend *leg4 = tdrLeg(0.55,0.27,0.85,0.32);
+  //TLegend *leg5 = tdrLeg(0.55,0.22,0.85,0.27);
+  //TLegend *leg6 = tdrLeg(0.55,0.17,0.85,0.22);
+  TLegend *leg1 = tdrLeg(0.15,0.25,0.45,0.30);
+  TLegend *leg2 = tdrLeg(0.15,0.20,0.45,0.25);
+  TLegend *leg3 = tdrLeg(0.15,0.15,0.45,0.20);
+  TLegend *leg4 = tdrLeg(0.45,0.25,0.75,0.30);
+  TLegend *leg5 = tdrLeg(0.45,0.20,0.75,0.25);
+  TLegend *leg6 = tdrLeg(0.45,0.15,0.75,0.20);
   TLegend *legs[nvar] = {leg1, leg2, leg3, leg4, leg5, leg6};
 
   int colors[] = {kBlack, kGreen+3, kOrange+1, kViolet+1, kAzure+2, kRed+1};
-  int markers[] = {kFullStar, kFullSquare, kFullCircle, kFullDiamond, kFullCross, kFullTriangleUp};
+  int markers[] = {kFullTriangleDown, kFullSquare, kFullCircle, kFullDiamond, kFullCross, kFullTriangleUp};
 
   for (int ivar = 0; ivar != nvar; ++ivar) {
     
@@ -1416,8 +1424,9 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
 
     //TLegend *leg = (ie<3 ? leg1 : leg2);
     TLegend *leg = legs[ivar];
-    //leg->SetTextColor(colors[ivar]);
+    leg->SetTextColor(colors[ivar]);
     leg->SetTextFont(42);
+    leg->SetTextSize(0.035);
     TString var_name;
     if(doATLAS) var_name = "E";
     else var_name = "p_{T}";
@@ -1431,15 +1440,16 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   tex->SetTextFont(42);
   
   TLine *l = new TLine();
-  l->DrawLine(1.3,0.58,1.3,1.04);
-  l->DrawLine(2.5,0.58,2.5,1.04);
-  l->DrawLine(3.0,0.58,3.0,1.04);
-  l->DrawLine(4.75,0.58,4.75,1.04);
+  l->DrawLine(1.3,0.27,1.3,1.02);
+  l->DrawLine(2.5,0.27,2.5,1.02);
+  l->DrawLine(3.0,0.27,3.0,1.02);
+  //l->DrawLine(4.75,0.52,4.75,1.02);
   l->SetLineStyle(kDashed);
-  l->DrawLine(3.12,0.58,3.12,1.04);
+  l->DrawLine(3.12,0.27,3.12,1.02);
 
   //TLatex* tex_tmp = tex->DrawLatex(0.35,0.86,"2016 JES: "+JetInfo::get_legend_title(algo));
-  TLatex* tex_tmp = tex->DrawLatex(0.18,0.872,"2022 JES: AK4, PF+PUPPI");
+  //TLatex* tex_tmp = tex->DrawLatex(0.18,0.872,"2022 JES: AK8, PF+PUPPI");
+  TLatex* tex_tmp = tex->DrawLatex(0.18,0.872,"AK4 PUPPI, No JECs applied");
   //The size of the x-axis in axis coordinates
   double x_axis_width = c1->GetUxmax()-c1->GetUxmin();
   //The width of the pad in x-axis coordinates = x-axis width/percentage that the x-axis takes up in NDC coordinates
@@ -1451,13 +1461,13 @@ TCanvas * draw_response(TString algo, FactorizedJetCorrector * jetCorr, TString 
   //tex_tmp->Draw("same");
 
   tex->DrawLatex(0.21,0.82,"Barrel");
-  tex->DrawLatex(0.47,0.82,"Endcap"); 
-  tex->DrawLatex(0.72,0.82,"Forward");
+  tex->DrawLatex(0.46,0.82,"Endcap"); 
+  tex->DrawLatex(0.71,0.82,"Forward");
 
   tex->DrawLatex(0.23,0.78,"BB");
   tex->DrawLatex(0.42,0.78,"EC1");
-  tex->DrawLatex(0.563,0.78,"EC2");
-  tex->DrawLatex(0.76,0.78,"HF");
+  tex->DrawLatex(0.54,0.78,"EC2");
+  tex->DrawLatex(0.74,0.78,"HF");
 
   return c1;
 }

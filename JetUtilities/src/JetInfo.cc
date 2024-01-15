@@ -408,12 +408,14 @@ int JetInfo::getDetIndex(double eta){
 
    if (eta<1.3)
       return 0;
-   else if (eta<2.5)
+   else if (eta<2.4)
       return 1;
-   else if (eta<3)
+   else if (eta<2.7)
       return 2;
+   else if (eta<3.0)
+      return 3;
 
-   return 3;
+   return 4;
 
 }//getDetIndex
 

@@ -578,7 +578,10 @@ int main(int argc,char**argv)
       }
 
 
-      TFile *f_veto = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC_NewMethods/CMSSW_13_0_3/src/JetMETAnalysisMCtruth/MyDataMCHistos/VetoMaps_Winter22Run3_RunE_v1.root","READ");
+      //TFile *f_veto = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC_NewMethods/CMSSW_13_0_3/src/JetMETAnalysisMCtruth/MyDataMCHistos/veto_maps/VetoMaps_Winter22Run3_RunCD_v2.root","READ");
+      TFile *f_veto = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC_NewMethods/CMSSW_13_0_3/src/JetMETAnalysisMCtruth/MyDataMCHistos/veto_maps/VetoMaps_Winter22Run3_RunEFG_v1.root","READ");
+      //TFile *f_veto = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC_NewMethods/CMSSW_13_0_3/src/JetMETAnalysisMCtruth/MyDataMCHistos/veto_maps/VetoMaps_Summer23Prompt23_RunC_v1.root","READ");
+      //TFile *f_veto = new TFile("/afs/cern.ch/work/i/izisopou/public/JEC_NewMethods/CMSSW_13_0_3/src/JetMETAnalysisMCtruth/MyDataMCHistos/veto_maps/VetoMaps_Summer23BpixPrompt23_RunD_v1.root","READ");
 
       TH2D *h_veto = (TH2D*)f_veto->Get("jetvetomap_all");
 
@@ -631,6 +634,7 @@ int main(int argc,char**argv)
 
  	 //Apply |DZ|<0.2 cm cut 
 	 if(doDZcut){
+	 	if(JRAEvt->recopvz->size()==0) continue;
 		if(fabs(JRAEvt->recopvz->at(0) - JRAEvt->genpvz)>=0.2) continue;	
 	 }
 

@@ -18,7 +18,7 @@ config.Data.unitsPerJob = 1
 config.Data.publication = False
 config.Data.publishDBS = 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter/'
 config.Data.outputDatasetTag = 'outputDatasetTag'
-config.Data.outLFNDirBase = '/store/group/phys_jetmet/ilias/test/'
+config.Data.outLFNDirBase = '/store/group/phys_jetmet/<personal_folder>/'
 #config.Data.ignoreLocality = True
 config.Data.ignoreLocality = False
 
