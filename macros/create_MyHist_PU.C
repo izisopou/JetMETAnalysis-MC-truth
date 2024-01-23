@@ -46,7 +46,7 @@ void create_MyHist_PU(){
   {
 	tree->GetEntry(i);
 	if(i%1000000==0) cout << "Processed " << i << " / " << tree->GetEntries() << " events" << endl;
-	//pileup->Fill(tnpus->at(12));
+	pileup->Fill(tnpus->at(12));
 	
 	for(int ijet=0; ijet<AllGenJetsPt->size(); ijet++)
 	{
@@ -59,11 +59,11 @@ void create_MyHist_PU(){
 	}
   }
 
-  //TFile *fout = new TFile("MyMCPUHisto_Run3Summer23BPix_FlatPU0to70.root","RECREATE");
-  TFile *fout = new TFile("pT_spectra/Gen_pT_spectrum_Run3Summer23BPix_PremixedPU.root","RECREATE");
+  TFile *fout = new TFile("MyMCPUHisto_Run3Summer23BPix_FlatPU0to70.root","RECREATE");
+  //TFile *fout = new TFile("pT_spectra/Gen_pT_spectrum_Run3Summer23BPix_PremixedPU.root","RECREATE");
   fout->cd();
-  //pileup->Write();
-  gen_pt->Write();
-  gen_pt_3leading->Write();
+  pileup->Write();
+  //gen_pt->Write();
+  //gen_pt_3leading->Write();
 
 }
