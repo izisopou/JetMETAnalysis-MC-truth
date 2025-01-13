@@ -57,8 +57,8 @@ https://cms.cern.ch/iCMS/user/noteinfo?cmsnoteid=CMS%20AN-2019/230
 
 mkdir MC-truth-JEC/ \
 cd MC-truth-JEC/ \
-cmsrel CMSSW_12_4_3 \
-cd CMSSW_12_4_3/src \
+cmsrel CMSSW_13_3_0 \
+cd CMSSW_13_3_0/src \
 cmsenv \
 git clone -b 130X https://github.com/izisopou/JetMETAnalysisMCtruth.git 
 
